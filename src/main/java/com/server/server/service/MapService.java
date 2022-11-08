@@ -12,6 +12,10 @@ public class MapService {
     @Autowired
     private MapRepository mapRepository;
 
+    private Optional<Map> getStateMap(String state){
+        return mapRepository.findById(state);
+    }
+
     public Optional<Map> getUSMap(){
         return mapRepository.findById("home");
     }
