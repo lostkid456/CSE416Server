@@ -3,10 +3,9 @@ package com.server.server.model.geojson;
 import lombok.Data;
 
 import javax.persistence.Embeddable;
+import java.util.List;
 
 @Data
-@Embeddable
 public class Coordinate {
-    private double latitude;
-    private double longitude;
+    private List<Double> coordinates;
 }
