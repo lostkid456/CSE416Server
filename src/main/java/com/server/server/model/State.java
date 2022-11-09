@@ -18,7 +18,7 @@ public class State {
     @NonNull
     private String state;
     private int number_of_seats;
+
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name="ensemble_state",referencedColumnName = "state")
-    private Ensemble ensemble;
+    private Ensemble stateEnsemble;
 }

@@ -5,18 +5,18 @@ import com.server.server.repository.StateRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
 public class StateService {
     @Autowired
-    private StateRepository repository;
+    private StateRepository stateRepository;
 
-    public Optional<State> getState(String state){
-        return repository.findById(state);
+    public State getStateHome(String state){
+        return stateRepository.findByStateEnsemble_State(state);
     }
 
-    public State setState(State state){
-        return repository.save(state);
-    }
+
+
 }

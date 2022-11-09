@@ -16,6 +16,10 @@ public class MapService {
         return mapRepository.findById(state);
     }
 
+    private Map addStateMap(Map map){
+        return mapRepository.save(map);
+    };
+
     public Optional<Map> getUSMap(){
         return mapRepository.findById("home");
     }

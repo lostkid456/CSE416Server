@@ -7,19 +7,17 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Data
 @Entity
 @NoArgsConstructor
 @RequiredArgsConstructor
-public class Ensemble {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+public class Ensemble{
     @Id
     @NonNull
     private String state;
+
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name="map_id",referencedColumnName = "state")
-    Map currentDistrictPlan;
+    private Map currentDistrict;
 }

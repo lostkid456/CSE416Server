@@ -29,10 +29,10 @@ public class StateController {
         if(map.isEmpty()){
             try{
                 ObjectMapper objectMapper=new ObjectMapper();
-                Map usMap =objectMapper.readValue(ResourceUtils.getFile("classpath:geoJson/tl_2022_us_state.json"), Map.class);
+                Map usMap=objectMapper.readValue(
+                        ResourceUtils.getFile("classpath:geoJson/tl_2022_us_state.json"), Map.class);
                 usMap.setId("home");
-                mapService.addUSMap(usMap);
-                return Optional.of(usMap);
+                return Optional.of(mapService.addUSMap(usMap));
             }catch(IOException e){
                 System.out.println(e.getMessage());
             }
@@ -41,25 +41,9 @@ public class StateController {
     }
 
     @GetMapping("/home/{state}")
-    public Optional<State> getState(@PathVariable String state){
-        Optional<State> stateInfo=stateService.getState(state);
-        if(stateInfo.isEmpty()){
-            try{
-                ObjectMapper objectMapper=new ObjectMapper();
-                Map stateMap;
-                switch(state){
-                    case "FL":
-                        stateMap=objectMapper.readValue(ResourceUtils.getFile("classpath:geoJson/P000C0109.json"), Map.class);
-                    case "OH":
-                        stateMap=objectMapper.readValue(ResourceUtils.getFile("classpath:geoJson/oh_cong_adopted_2022.json"), Map.class);
-                    case "NC":
-                        stateMap=objectMapper.readValue(ResourceUtils.getFile("classpath:geoJson/NC_SMmap2_Statewide.json"), Map.class);
-                }
+    public State getState(@PathVariable String state){
+        State stateInfo=stateService.getStateHome(state);
 
-            }catch (IOException e){
-                System.out.println(e.getMessage());
-            }
-        }
         return stateInfo;
     }
 

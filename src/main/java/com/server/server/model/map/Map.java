@@ -1,5 +1,6 @@
 package com.server.server.model.map;
 
+import com.server.server.model.Ensemble;
 import com.server.server.model.geojson.Feature;
 import com.vladmihalcea.hibernate.type.json.JsonType;
 import lombok.*;
