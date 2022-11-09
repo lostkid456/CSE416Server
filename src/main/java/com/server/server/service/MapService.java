@@ -12,20 +12,13 @@ public class MapService {
     @Autowired
     private MapRepository mapRepository;
 
-    private Optional<Map> getStateMap(String state){
+    public Optional<Map> getMap(String state){
         return mapRepository.findById(state);
     }
 
-    private Map addStateMap(Map map){
-        return mapRepository.save(map);
-    };
-
-    public Optional<Map> getUSMap(){
-        return mapRepository.findById("home");
-    }
-
-    public Map addUSMap(Map map){
+    public Map addMap(Map map){
         return mapRepository.save(map);
     }
+
 
 }

@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
-import javax.persistence.Embeddable;
 
 @Data
 public class Properties {
@@ -64,4 +63,47 @@ public class Properties {
     @JsonProperty("INTPTLON")
     private String intptlon;
 
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    @JsonProperty("OBJECTID")
+    private long objectid;
+
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    @JsonProperty("District_A")
+    private long districtA;
+
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    @JsonProperty("Shape_Leng")
+    private double shapeLeng;
+
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    @JsonProperty("Shape_Area")
+    private double shapeArea;
+
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    @JsonProperty("CONG_DIST")
+    private String congDist;
+
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    @JsonProperty("LONGNAME")
+    private String longName;
+
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    @JsonProperty("SHORTNAME")
+    private String shortName;
+
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    @JsonProperty("DISTRICT")
+    private long district;
+
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    @JsonProperty("COLOR")
+    private long color;
+
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    @JsonProperty("TOTAL")
+    private long total;
+
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    @JsonProperty("TARGET_DEV")
+    private String targetDev;
 }
