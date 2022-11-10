@@ -1,23 +1,37 @@
 package com.server.server.model;
 
-import com.server.server.model.map.Map;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
+import org.hibernate.Hibernate;
 
-import javax.persistence.*;
-import java.io.Serializable;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Transient;
+import java.util.Map;
+import java.util.Objects;
 
-@Data
+@Getter
+@Setter
+@ToString
 @Entity
-@NoArgsConstructor
 @RequiredArgsConstructor
 public class Ensemble{
     @Id
     @NonNull
     private String state;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    private Map currentDistrict;
+    @Transient
+    private Map<String,Object> currentDistrictPlan;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        Ensemble ensemble = (Ensemble) o;
+        return Objects.equals(state, ensemble.state);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }
