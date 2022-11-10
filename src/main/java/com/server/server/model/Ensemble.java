@@ -14,6 +14,7 @@ import java.util.Objects;
 @ToString
 @Entity
 @RequiredArgsConstructor
+@NoArgsConstructor
 public class Ensemble{
     @Id
     @NonNull

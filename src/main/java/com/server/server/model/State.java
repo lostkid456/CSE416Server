@@ -12,6 +12,7 @@ import java.util.Objects;
 @ToString
 @Entity
 @RequiredArgsConstructor
+@NoArgsConstructor
 public class State {
     @Id
     @NonNull

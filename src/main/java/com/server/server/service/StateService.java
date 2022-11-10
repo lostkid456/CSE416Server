@@ -23,7 +23,11 @@ public class StateService {
     private EnsembleRepository ensembleRepository;
 
     public Optional<State> getState(String id){
-        return stateRepository.findById(id);
+        Optional<State> queryState= stateRepository.findById(id);
+        if(queryState.isPresent()){
+            queryState.get().setStateEnsemble(this.getEnsemble(id).get());
+        }
+        return queryState;
     }
 
     public State addState(State state){
@@ -31,39 +35,41 @@ public class StateService {
     }
 
     public Optional<Ensemble> getEnsemble(String id){
-        return ensembleRepository.findById(id);
+        Optional<Ensemble> ensemble=ensembleRepository.findById(id);
+        if(ensemble.isPresent()){
+            try {
+                ObjectMapper objectMapper = new ObjectMapper();
+                switch (id) {
+                    case "OH" -> {
+                        File ohioMap = ResourceUtils.getFile("classpath:geoJson/oh_cong_adopted_2022.json");
+                        Map<String, Object> ohioData = objectMapper.readValue(ohioMap, new TypeReference<>() {
+                        });
+                        ensemble.get().setCurrentDistrictPlan(ohioData);
+                    }
+                    case "NC" -> {
+                        File ncMap = ResourceUtils.getFile("classpath:geoJson/NC_SMmap2_Statewide.json");
+                        Map<String, Object> ncData = objectMapper.readValue(ncMap, new TypeReference<>() {
+                        });
+                        ensemble.get().setCurrentDistrictPlan(ncData);
+                    }
+                    case "FL" -> {
+                        File flordiaMap = ResourceUtils.getFile("classpath:geoJson/P000C0109.json");
+                        Map<String, Object> flordiaData = objectMapper.readValue(flordiaMap, new TypeReference<>() {
+                        });
+                        ensemble.get().setCurrentDistrictPlan(flordiaData);
+                    }
+                    default -> {
+                    }
+                }
+            } catch (IOException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+        return ensemble;
     }
 
     public Ensemble addEnsemble(String state) {
-        Ensemble newEnsemble = new Ensemble(state);
-        try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            switch (state) {
-                case "OH" -> {
-                    File ohioMap = ResourceUtils.getFile("classpath:geoJson/oh_cong_adopted_2022.json");
-                    Map<String, Object> ohioData = objectMapper.readValue(ohioMap, new TypeReference<>() {
-                    });
-                    newEnsemble.setCurrentDistrictPlan(ohioData);
-                }
-                case "NC" -> {
-                    File ncMap = ResourceUtils.getFile("classpath:geoJson/NC_SMmap2_Statewide.json");
-                    Map<String, Object> ncData = objectMapper.readValue(ncMap, new TypeReference<>() {
-                    });
-                    newEnsemble.setCurrentDistrictPlan(ncData);
-                }
-                case "FL" -> {
-                    File flordiaMap = ResourceUtils.getFile("classpath:geoJson/P000C0109.json");
-                    Map<String, Object> flordiaData = objectMapper.readValue(flordiaMap, new TypeReference<>() {
-                    });
-                    newEnsemble.setCurrentDistrictPlan(flordiaData);
-                }
-                default -> {
-                }
-            }
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
-        }
-        return newEnsemble;
+        return ensembleRepository.save(new Ensemble(state));
     }
 
 
