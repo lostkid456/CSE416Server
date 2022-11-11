@@ -2,6 +2,8 @@ package com.server.server.repository;
 
 import com.server.server.model.Ensemble;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public interface EnsembleRepository extends JpaRepository<Ensemble,String> {
+@Repository
+public interface EnsembleRepository extends JpaRepository<Ensemble,Integer> {
 }

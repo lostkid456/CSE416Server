@@ -1,38 +1,41 @@
 package com.server.server.model;
 
 import lombok.*;
-import org.hibernate.Hibernate;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Transient;
+import javax.persistence.*;
+import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 @Getter
 @Setter
 @ToString
-@Entity
 @RequiredArgsConstructor
 @NoArgsConstructor
+@Entity
 public class Ensemble{
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    private int id;
+
     @NonNull
-    private String state;
+    private String planGeoJsonPath;
 
     @Transient
     private Map<String,Object> currentDistrictPlan;
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        Ensemble ensemble = (Ensemble) o;
-        return Objects.equals(state, ensemble.state);
-    }
+    @OneToMany(
+            cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY
+    )
+    @JoinColumn(name = "ensemble_id")
+    @ToString.Exclude
+    private List<DistrictPlan> districtPlans;
 
-    @Override
-    public int hashCode() {
-        return getClass().hashCode();
-    }
+    @OneToMany(
+            cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY
+    )
+    @JoinColumn(name = "ensemble_id")
+    @ToString.Exclude
+    private List<BoxAndWhisker> boxAndWhiskers;
 }
