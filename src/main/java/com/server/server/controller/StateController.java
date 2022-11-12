@@ -88,10 +88,13 @@ public class StateController {
         switch(objectNode.get("state").asText()){
             case "OH":
                 ensemble.setPlanGeoJsonPath("oh_cong_adopted_2022.json");
+                break;
             case "FL":
                 ensemble.setPlanGeoJsonPath("P000C0109.json");
+                break;
             case "NC":
                 ensemble.setPlanGeoJsonPath("NC_SMmap2_Statewide.json");
+                break;
         }
         System.out.println(ensemble.getPlanGeoJsonPath());
         BoxAndWhisker boxAndWhisker=new BoxAndWhisker();
