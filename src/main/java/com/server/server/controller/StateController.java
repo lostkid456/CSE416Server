@@ -50,9 +50,18 @@ public class StateController {
         return null;
     }
 
+    @GetMapping("/home/map/{state}")
+    public State getStateMap(@PathVariable String state){
+        State stateHome=stateService.getState(state);
+        stateHome.setStateDemographic(null);
+        stateHome.getEnsemble().setDistrictPlans(null);
+        stateHome.getEnsemble().setBoxAndWhiskers(null);
+        return stateHome;
+    }
+
     @GetMapping("/home/{state}")
     public State getStateHome(@PathVariable String state){
-        State stateHome=stateService.getState(state);
+        State stateHome=stateService.getStateNoMap(state);
         stateHome.getEnsemble().setDistrictPlans(null);
         stateHome.getEnsemble().setBoxAndWhiskers(null);
         return stateHome;
