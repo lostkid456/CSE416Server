@@ -2,16 +2,15 @@ package com.server.server.controller;
 
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.databind.util.JSONPObject;
 import com.server.server.model.*;
 import com.server.server.model.enums.InterestTypes;
 import com.server.server.model.relationships.BWType;
 import com.server.server.model.relationships.IsMMD;
-import com.server.server.service.BoxAndWhiskerService;
-import com.server.server.service.DistrictPlanService;
-import com.server.server.service.EnsembleService;
-import com.server.server.service.StateService;
+import com.server.server.service.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.ResourceUtils;
@@ -20,6 +19,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -38,6 +39,10 @@ public class StateController {
     @Autowired
     private BoxAndWhiskerService boxAndWhiskerService;
 
+    @Autowired
+    private RepDemSplitService repDemSplitService;
+
+
     @GetMapping("/home")
     public Map<String,Object> getHome(){
         try{
@@ -53,6 +58,7 @@ public class StateController {
     @GetMapping("/home/map/{state}")
     public State getStateMap(@PathVariable String state){
         State stateHome=stateService.getState(state);
+        stateHome.getEnsemble().setRepDemSplits(null);
         stateHome.setStateDemographic(null);
         stateHome.getEnsemble().setDistrictPlans(null);
         stateHome.getEnsemble().setBoxAndWhiskers(null);
@@ -64,6 +70,7 @@ public class StateController {
         State stateHome=stateService.getStateNoMap(state);
         stateHome.getEnsemble().setDistrictPlans(null);
         stateHome.getEnsemble().setBoxAndWhiskers(null);
+        stateHome.getEnsemble().setRepDemSplits(null);
         return stateHome;
     }
 
@@ -72,6 +79,7 @@ public class StateController {
         State stateInfo=stateService.getStateNoMap(state);
         stateInfo.getEnsemble().setDistrictPlans(null);
         stateInfo.setStateDemographic(null);
+        stateInfo.getEnsemble().setRepDemSplits(null);
         return stateInfo;
     }
 
@@ -82,6 +90,15 @@ public class StateController {
         stateInfo.setStateDemographic(null);
         return stateInfo;
     }
+
+
+
+
+
+
+
+
+
 
     @PostMapping("/addstate")
     public State addState(@RequestBody ObjectNode objectNode){
@@ -124,6 +141,18 @@ public class StateController {
         districtPlan.setNumberOfRepublicans(objectNode.get("republican").asInt());
         districtPlan.setNumberOfMajorityMinority(objectNode.get("majorityMinority").asInt());
         ensemble.setDistrictPlans(List.of(districtPlan));
+        JsonNode array=objectNode.get("splits");
+        Iterator<JsonNode> itr=array.iterator();
+
+        List<RepDemSplit> newSplits=new ArrayList<>();
+        while(itr.hasNext()){
+            JsonNode item=itr.next();
+            RepDemSplit newSplit=new RepDemSplit();
+            newSplit.setNumberOfPlans(item.get("plans").asInt());
+            newSplit.setSplit(item.get("split").asText());
+            newSplits.add(newSplit);
+        }
+        ensemble.setRepDemSplits(newSplits);
         state.setEnsemble(ensemble);
         return stateService.addState(state);
     }

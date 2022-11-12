@@ -38,4 +38,12 @@ public class Ensemble{
     @JoinColumn(name = "ensemble_id")
     @ToString.Exclude
     private List<BoxAndWhisker> boxAndWhiskers;
+
+    @OneToMany(
+            cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY
+    )
+    @JoinColumn(name = "ensemble_id")
+    @ToString.Exclude
+    private List<RepDemSplit> repDemSplits;
 }
