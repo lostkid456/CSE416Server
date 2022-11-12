@@ -74,22 +74,19 @@ public class StateController {
         return stateHome;
     }
 
-    @GetMapping("/districtplan/boxwhisker/{state}")
+    @GetMapping("/districtplan/plots/{state}")
     public State getBoxWhisker(@PathVariable String state){
         State stateInfo=stateService.getStateNoMap(state);
         stateInfo.getEnsemble().setDistrictPlans(null);
         stateInfo.setStateDemographic(null);
-        stateInfo.getEnsemble().setRepDemSplits(null);
         return stateInfo;
     }
 
-    @GetMapping("/districtplan/bargraph/{state}")
-    public State getBarGraph(@PathVariable String state){
-        State stateInfo=stateService.getStateNoMap(state);
-        stateInfo.getEnsemble().setBoxAndWhiskers(null);
-        stateInfo.setStateDemographic(null);
-        return stateInfo;
-    }
+
+
+
+
+
 
 
 
