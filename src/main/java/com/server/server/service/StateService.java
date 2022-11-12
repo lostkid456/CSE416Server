@@ -37,6 +37,10 @@ public class StateService {
         return null;
     }
 
+    public State getStateNoMap(String state){
+        return stateRepository.findByState(state);
+    }
+
     public State addState(State state){
         return stateRepository.save(state);
     }

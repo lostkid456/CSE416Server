@@ -51,8 +51,27 @@ public class StateController {
     }
 
     @GetMapping("/home/{state}")
-    public State getState(@PathVariable String state){
-        return stateService.getState(state);
+    public State getStateHome(@PathVariable String state){
+        State stateHome=stateService.getState(state);
+        stateHome.getEnsemble().setDistrictPlans(null);
+        stateHome.getEnsemble().setBoxAndWhiskers(null);
+        return stateHome;
+    }
+
+    @GetMapping("/districtplan/boxwhisker/{state}")
+    public State getBoxWhisker(@PathVariable String state){
+        State stateInfo=stateService.getStateNoMap(state);
+        stateInfo.getEnsemble().setDistrictPlans(null);
+        stateInfo.setStateDemographic(null);
+        return stateInfo;
+    }
+
+    @GetMapping("/districtplan/bargraph/{state}")
+    public State getBarGraph(@PathVariable String state){
+        State stateInfo=stateService.getStateNoMap(state);
+        stateInfo.getEnsemble().setBoxAndWhiskers(null);
+        stateInfo.setStateDemographic(null);
+        return stateInfo;
     }
 
     @PostMapping("/addstate")
