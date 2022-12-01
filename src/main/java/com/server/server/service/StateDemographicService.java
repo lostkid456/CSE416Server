@@ -10,7 +10,5 @@ public class StateDemographicService {
     @Autowired
     private StateDemographicRepository stateDemographicRepository;
 
-    public StateDemographic addStateDemographic(StateDemographic stateDemographic){
-        return stateDemographicRepository.save(stateDemographic);
-    }
+
 }

@@ -8,27 +8,22 @@ import java.util.Map;
 
 @Getter
 @Setter
-@ToString
+//@ToString
 @RequiredArgsConstructor
 @NoArgsConstructor
 @Entity
+@Table(name = "Ensembles")
 public class Ensemble{
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "ensemble_gen")
+    @SequenceGenerator(name="ensemble_gen",sequenceName = "ensemble_seq")
     private int id;
-
-    @NonNull
-    private String planGeoJsonPath;
-
-    @Transient
-    private Map<String,Object> currentDistrictPlan;
 
     @OneToMany(
             cascade = CascadeType.ALL,
             fetch = FetchType.LAZY
     )
     @JoinColumn(name = "ensemble_id")
-    @ToString.Exclude
     private List<DistrictPlan> districtPlans;
 
     @OneToMany(
@@ -36,7 +31,6 @@ public class Ensemble{
             fetch = FetchType.LAZY
     )
     @JoinColumn(name = "ensemble_id")
-    @ToString.Exclude
     private List<BoxAndWhisker> boxAndWhiskers;
 
     @OneToMany(
@@ -44,6 +38,5 @@ public class Ensemble{
             fetch = FetchType.LAZY
     )
     @JoinColumn(name = "ensemble_id")
-    @ToString.Exclude
     private List<RepDemSplit> repDemSplits;
 }

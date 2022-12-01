@@ -20,28 +20,5 @@ public class StateService {
     @Autowired
     private EnsembleRepository ensembleRepository;
 
-    public State getState(String state){
-        State foundState=stateRepository.findByState(state);
-        System.out.println("5 " +foundState);
-        try{
-            ObjectMapper objectMapper=new ObjectMapper();
-            Map<String,Object> currentJson=objectMapper.readValue(ResourceUtils.getFile(
-                    "classpath:geoJson/"+foundState.getEnsemble().getPlanGeoJsonPath()), new TypeReference<>() {
-                    });
-            System.out.println("6: "+foundState.getEnsemble());
-            foundState.getEnsemble().setCurrentDistrictPlan(currentJson);
-            return foundState;
-        } catch (IOException e) {
-            System.out.println("OH NO");
-        }
-        return null;
-    }
 
-    public State getStateNoMap(String state){
-        return stateRepository.findByState(state);
-    }
-
-    public State addState(State state){
-        return stateRepository.save(state);
-    }
 }

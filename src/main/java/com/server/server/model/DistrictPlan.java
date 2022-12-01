@@ -1,19 +1,22 @@
 package com.server.server.model;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.server.server.model.relationships.IsMMD;
 import lombok.*;
 
 import javax.persistence.*;
 
 @Getter
 @Setter
-@ToString
+//@ToString
 @Entity
+@Table(name = "DistrictPlans")
 public class DistrictPlan {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "districtPlan_gen")
+    @SequenceGenerator(name = "districtPlan_gen",sequenceName = "districtPlan_seq")
     private int id;
+
+    private boolean isMMD;
 
     private int numberOfDemocrats;
 
@@ -21,10 +24,5 @@ public class DistrictPlan {
 
     private int numberOfMajorityMinority;
 
-    private String districtBoundary;
-
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name="isMMD_id",referencedColumnName = "id")
-    @JsonManagedReference
-    private IsMMD isMMD;
+    private String districtBoundaryPath;
 }

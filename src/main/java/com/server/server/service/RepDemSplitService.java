@@ -12,14 +12,5 @@ public class RepDemSplitService {
     @Autowired
     private RepDemSplitRepository repDemSplitRepository;
 
-    public RepDemSplit addRepDemSplit(String split,int plan){
-        RepDemSplit newSplit=new RepDemSplit();
-        newSplit.setSplit(split);
-        newSplit.setNumberOfPlans(plan);
-        return repDemSplitRepository.save(newSplit);
-    }
 
-    public List<RepDemSplit> addRepDemSplits(List<RepDemSplit> splits){
-        return repDemSplitRepository.saveAllAndFlush(splits);
-    }
 }

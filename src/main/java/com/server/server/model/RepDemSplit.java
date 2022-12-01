@@ -3,10 +3,7 @@ package com.server.server.model;
 import lombok.*;
 import org.hibernate.Hibernate;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Objects;
 
 @Getter
@@ -14,6 +11,7 @@ import java.util.Objects;
 @ToString
 @RequiredArgsConstructor
 @Entity
+@Table(name = "RepDemSplits")
 public class RepDemSplit {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

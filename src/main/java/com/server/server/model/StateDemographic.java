@@ -5,24 +5,21 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.List;
 
 @Getter
 @Setter
-@ToString
+//@ToString
 @RequiredArgsConstructor
 @Entity
+@Table(name = "StateDemographics")
 public class StateDemographic {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "state_demo_gen")
+    @SequenceGenerator(name = "state_demo_gen",sequenceName = "state_demo_sequence")
     private int id;
 
-    private int totalPopulation;
-    private int caucasian;
-    private int africanAmerican;
-    private int asian;
-    private int latino;
+    @OneToMany
+    private List<Demographic> demographics;
 }
