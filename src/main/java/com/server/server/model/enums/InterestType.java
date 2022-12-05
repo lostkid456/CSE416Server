@@ -1,5 +1,5 @@
 package com.server.server.model.enums;
 
 public enum InterestType {
-    ASIAN,CAUCASIAN,WHITE,AFRICAN,REPUBLICAN,DEMOCRAT;
+    ASIAN,CAUCASIAN,AFRICAN,LATINO,REPUBLICAN,DEMOCRAT;
 }

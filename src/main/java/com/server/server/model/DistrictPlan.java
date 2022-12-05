@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Getter
 @Setter
@@ -12,8 +13,7 @@ import javax.persistence.*;
 @Table(name = "DistrictPlans")
 public class DistrictPlan {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "districtPlan_gen")
-    @SequenceGenerator(name = "districtPlan_gen",sequenceName = "districtPlan_seq")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     private boolean isMMD;
@@ -25,4 +25,18 @@ public class DistrictPlan {
     private int numberOfMajorityMinority;
 
     private String districtBoundaryPath;
+
+    @OneToMany(
+            cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY
+    )
+    @JoinColumn(name = "district_plan_id")
+    private List<District> districts;
+
+    @OneToMany(
+            cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY
+    )
+    @JoinColumn(name = "district_plan_id")
+    private List<RepDemSplit> repDemSplits;
 }

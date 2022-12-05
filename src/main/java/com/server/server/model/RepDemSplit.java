@@ -14,7 +14,7 @@ import java.util.Objects;
 @Table(name = "RepDemSplits")
 public class RepDemSplit {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     private String split;

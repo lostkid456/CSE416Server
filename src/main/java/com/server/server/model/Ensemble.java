@@ -1,5 +1,6 @@
 package com.server.server.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 
 import javax.persistence.*;
@@ -9,14 +10,11 @@ import java.util.Map;
 @Getter
 @Setter
 //@ToString
-@RequiredArgsConstructor
-@NoArgsConstructor
 @Entity
 @Table(name = "Ensembles")
 public class Ensemble{
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "ensemble_gen")
-    @SequenceGenerator(name="ensemble_gen",sequenceName = "ensemble_seq")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @OneToMany(
@@ -32,11 +30,4 @@ public class Ensemble{
     )
     @JoinColumn(name = "ensemble_id")
     private List<BoxAndWhisker> boxAndWhiskers;
-
-    @OneToMany(
-            cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY
-    )
-    @JoinColumn(name = "ensemble_id")
-    private List<RepDemSplit> repDemSplits;
 }

@@ -1,21 +1,17 @@
 package com.server.server.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
+import org.hibernate.Hibernate;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Objects;
 
 @Getter
 @Setter
-//@ToString
 @RequiredArgsConstructor
 @Entity
-@Table(name = "StateDemographics")
-public class StateDemographic {
+public class DistrictDemographic {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int id;

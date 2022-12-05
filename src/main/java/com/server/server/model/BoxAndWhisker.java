@@ -12,15 +12,14 @@ import javax.persistence.*;
 @Table(name = "BoxAndWhiskers")
 public class BoxAndWhisker {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "bw_gen")
-    @SequenceGenerator(name="bw_gen",sequenceName = "bw_seq")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    private int min;
-    private int max;
-    private int median;
-    private int firstQ;
-    private int thirdQ;
+    private double min;
+    private double max;
+    private double median;
+    private double firstQ;
+    private double thirdQ;
 
     @Enumerated(EnumType.ORDINAL)
     private InterestType type;
