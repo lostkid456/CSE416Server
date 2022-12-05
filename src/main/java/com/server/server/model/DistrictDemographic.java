@@ -13,7 +13,7 @@ import java.util.Objects;
 @Entity
 public class DistrictDemographic {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @OneToMany(cascade = CascadeType.ALL)

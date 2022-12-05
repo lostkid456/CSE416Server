@@ -19,8 +19,6 @@ public class State {
     @NonNull
     private String state;
 
-//    private String planGeoJsonPath;
-
     private int numberOfSeats;
 
     @OneToOne(cascade = CascadeType.ALL)

@@ -17,7 +17,7 @@ import java.util.List;
 @Table(name = "StateDemographics")
 public class StateDemographic {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @OneToMany(cascade = CascadeType.ALL)

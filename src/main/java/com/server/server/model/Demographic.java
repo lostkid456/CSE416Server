@@ -20,6 +20,6 @@ public class Demographic {
 
     private int population;
 
-    @Enumerated(EnumType.ORDINAL)
+    @Enumerated(EnumType.STRING)
     private InterestType type;
 }
