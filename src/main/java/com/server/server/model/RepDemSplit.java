@@ -18,5 +18,5 @@ public class RepDemSplit {
     private int id;
 
     private String split;
-    private int numberOfPlans;
+    private int numberOfPlan;
 }

@@ -3,6 +3,7 @@ package com.server.server.model;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Getter
 @Setter
@@ -19,13 +20,11 @@ public class State {
     @NonNull
     private String state;
 
-    private int numberOfSeats;
+    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @JoinColumn(name="state_id")
+    private List<Ensemble> ensembles;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "ensemble_id",referencedColumnName = "id")
-    private Ensemble ensemble;
-
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name="stateDemographic_id",referencedColumnName = "id")
-    private StateDemographic stateDemographic;
+    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @JoinColumn(name="state_id")
+    private List<StateDemographic> stateDemographics;
 }

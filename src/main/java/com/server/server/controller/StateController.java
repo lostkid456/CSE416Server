@@ -40,191 +40,86 @@ public class StateController {
 
     @PostMapping("/addstate")
     public State addState(@RequestBody ObjectNode objectNode){
-        List<Demographic> demographicList=new ArrayList<>();
-        Demographic demoAsian=new Demographic();
-        demoAsian.setType(InterestType.ASIAN);
-        demoAsian.setPopulation(objectNode.get("asian").asInt());
-        Demographic demoCaucasian=new Demographic();
-        demoCaucasian.setType(InterestType.CAUCASIAN);
-        demoCaucasian.setPopulation(objectNode.get("caucasian").asInt());
-        Demographic demoAfrican=new Demographic();
-        demoAfrican.setType(InterestType.AFRICAN);
-        demoAfrican.setPopulation(objectNode.get("africanAmerican").asInt());
-        Demographic demoLatino=new Demographic();
-        demoLatino.setType(InterestType.LATINO);
-        demoLatino.setPopulation(objectNode.get("latino").asInt());
-        demographicList.add(demoAsian);
-        demographicList.add(demoCaucasian);
-        demographicList.add(demoAfrican);
-        demographicList.add(demoLatino);
-
-        StateDemographic stateDemographic=new StateDemographic();
-        stateDemographic.setDemographics(demographicList);
-
-        List<District> districts1=new ArrayList<>();
-        JsonNode dist_arr=objectNode.get("districts1");
-        for (JsonNode dNode : dist_arr) {
-            District district = new District();
-            List<Demographic> demographics = new ArrayList<>();
-            Demographic asian = new Demographic();
-            demoAsian.setType(InterestType.ASIAN);
-            demoAsian.setPopulation(dNode.get("asian").asInt());
-            Demographic caucasian = new Demographic();
-            demoCaucasian.setType(InterestType.CAUCASIAN);
-            demoCaucasian.setPopulation(dNode.get("caucasian").asInt());
-            Demographic african = new Demographic();
-            demoAfrican.setType(InterestType.AFRICAN);
-            demoAfrican.setPopulation(dNode.get("africanAmerican").asInt());
-            Demographic latino = new Demographic();
-            demoLatino.setType(InterestType.LATINO);
-            demoLatino.setPopulation(dNode.get("latino").asInt());
-            demographicList.add(asian);
-            demographicList.add(caucasian);
-            demographicList.add(african);
-            demographicList.add(latino);
-            DistrictDemographic districtDemographic = new DistrictDemographic();
-            districtDemographic.setDemographics(demographics);
-            district.setDistrictDemographic(districtDemographic);
-            district.setNumber(dNode.get("number").asInt());
-            districts1.add(district);
+        List<District> districts=new ArrayList<>();
+        JsonNode district1=objectNode.get("district1");
+        for(JsonNode district:district1){
+            District dist=new District();
+            DistrictDemographic whiteDemographic=new DistrictDemographic();
+            whiteDemographic.setType(InterestType.CAUCASIAN);
+            whiteDemographic.setPopulation(district.get("CAUCASIAN").asInt());
+            DistrictDemographic africanDemographic=new DistrictDemographic();
+            africanDemographic.setType(InterestType.AFRICAN);
+            africanDemographic.setPopulation(district.get("AFRICANAMERICAN").asInt());
+            DistrictDemographic asianDemographic=new DistrictDemographic();
+            asianDemographic.setType(InterestType.ASIAN);
+            asianDemographic.setPopulation(district.get("ASIAN").asInt());
+            DistrictDemographic latinoDemographic=new DistrictDemographic();
+            latinoDemographic.setType(InterestType.LATINO);
+            latinoDemographic.setPopulation(district.get("LATINO").asInt());
+            List<DistrictDemographic> demographics=new ArrayList<>(Arrays.asList(whiteDemographic,africanDemographic,
+                                                                                 asianDemographic,latinoDemographic));
+            dist.setDistrictDemographic(demographics);
+            districts.add(dist);
         }
-        List<District> districts2=new ArrayList<>();
-        JsonNode dist_arr1=objectNode.get("district2");
-        for (JsonNode dNode : dist_arr1) {
-            District district = new District();
-            List<Demographic> demographics = new ArrayList<>();
-            Demographic asian = new Demographic();
-            demoAsian.setType(InterestType.ASIAN);
-            demoAsian.setPopulation(dNode.get("asian").asInt());
-            Demographic caucasian = new Demographic();
-            demoCaucasian.setType(InterestType.CAUCASIAN);
-            demoCaucasian.setPopulation(dNode.get("caucasian").asInt());
-            Demographic african = new Demographic();
-            demoAfrican.setType(InterestType.AFRICAN);
-            demoAfrican.setPopulation(dNode.get("africanAmerican").asInt());
-            Demographic latino = new Demographic();
-            demoLatino.setType(InterestType.LATINO);
-            demoLatino.setPopulation(dNode.get("latino").asInt());
-            demographicList.add(asian);
-            demographicList.add(caucasian);
-            demographicList.add(african);
-            demographicList.add(latino);
-            DistrictDemographic districtDemographic = new DistrictDemographic();
-            districtDemographic.setDemographics(demographics);
-            district.setDistrictDemographic(districtDemographic);
-            district.setNumber(dNode.get("number").asInt());
-            districts2.add(district);
+        List<RepDemSplit> repDemSplits=new ArrayList<>();
+        JsonNode rDS=objectNode.get("repD");
+        for(JsonNode repDemSplit:rDS){
+            RepDemSplit repDemS=new RepDemSplit();
+            repDemS.setSplit(repDemSplit.get("split").asText());
+            repDemS.setNumberOfPlan(repDemSplit.get("number").asInt());
+            repDemSplits.add(repDemS);
         }
-        List<District> districts3=new ArrayList<>();
-        JsonNode dist_arr2=objectNode.get("district3");
-        for (JsonNode dNode : dist_arr2) {
-            District district = new District();
-            List<Demographic> demographics = new ArrayList<>();
-            Demographic asian = new Demographic();
-            demoAsian.setType(InterestType.ASIAN);
-            demoAsian.setPopulation(dNode.get("asian").asInt());
-            Demographic caucasian = new Demographic();
-            demoCaucasian.setType(InterestType.CAUCASIAN);
-            demoCaucasian.setPopulation(dNode.get("caucasian").asInt());
-            Demographic african = new Demographic();
-            demoAfrican.setType(InterestType.AFRICAN);
-            demoAfrican.setPopulation(dNode.get("africanAmerican").asInt());
-            Demographic latino = new Demographic();
-            demoLatino.setType(InterestType.LATINO);
-            demoLatino.setPopulation(dNode.get("latino").asInt());
-            demographicList.add(asian);
-            demographicList.add(caucasian);
-            demographicList.add(african);
-            demographicList.add(latino);
-            DistrictDemographic districtDemographic = new DistrictDemographic();
-            districtDemographic.setDemographics(demographics);
-            district.setDistrictDemographic(districtDemographic);
-            district.setNumber(dNode.get("number").asInt());
-            districts3.add(district);
+        List<DistrictPlan> districtPlans=new ArrayList<>();
+        JsonNode districtPlanNode=objectNode.get("districtPlans");
+        for(JsonNode districtPlan:districtPlanNode){
+            DistrictPlan districtPlan1=new DistrictPlan();
+            districtPlan1.setMMD(false);
+            districtPlan1.setNumberOfDemocrat(districtPlan.get("democrat").asInt());
+            districtPlan1.setNumberOfRepublican(districtPlan.get("republican").asInt());
+            districtPlan1.setNumberOfMajorityMinority(districtPlan.get("majorityMinority").asInt());
+            districtPlan1.setDistrictBoundaryPath(districtPlan.get("districtBoundaryPath").asText());
+            districtPlans.add(districtPlan1);
         }
-        List<District> districts4=new ArrayList<>();
-        JsonNode dist_arr3=objectNode.get("district4");
-        for (JsonNode dNode : dist_arr3) {
-            District district = new District();
-            List<Demographic> demographics = new ArrayList<>();
-            Demographic asian = new Demographic();
-            demoAsian.setType(InterestType.ASIAN);
-            demoAsian.setPopulation(dNode.get("asian").asInt());
-            Demographic caucasian = new Demographic();
-            demoCaucasian.setType(InterestType.CAUCASIAN);
-            demoCaucasian.setPopulation(dNode.get("caucasian").asInt());
-            Demographic african = new Demographic();
-            demoAfrican.setType(InterestType.AFRICAN);
-            demoAfrican.setPopulation(dNode.get("africanAmerican").asInt());
-            Demographic latino = new Demographic();
-            demoLatino.setType(InterestType.LATINO);
-            demoLatino.setPopulation(dNode.get("latino").asInt());
-            demographicList.add(asian);
-            demographicList.add(caucasian);
-            demographicList.add(african);
-            demographicList.add(latino);
-            DistrictDemographic districtDemographic = new DistrictDemographic();
-            districtDemographic.setDemographics(demographics);
-            district.setDistrictDemographic(districtDemographic);
-            district.setNumber(dNode.get("number").asInt());
-            districts4.add(district);
-        }
-
-        JsonNode arr=objectNode.get("districtPlans");
-        Iterator<JsonNode> itr1=arr.iterator();
-        List<DistrictPlan> districtPlans= new ArrayList<>();
-        while(itr1.hasNext()){
-            JsonNode item= itr1.next();
-            DistrictPlan districtPlan=new DistrictPlan();
-            districtPlan.setMMD(item.get("isMMD").asBoolean());
-            districtPlan.setNumberOfDemocrats(item.get("democrat").asInt());
-            districtPlan.setNumberOfRepublicans(item.get("republican").asInt());
-            districtPlan.setNumberOfMajorityMinority(item.get("majorityMinority").asInt());
-            districtPlan.setDistrictBoundaryPath(item.get("districtBoundaryPath").asText());
-            districtPlans.add(districtPlan);
-        }
-
-        List<RepDemSplit> splits=new ArrayList<>();
-        JsonNode repD=objectNode.get("repD");
-        Iterator<JsonNode> itrr=repD.iterator();
-        while(itrr.hasNext()){
-            JsonNode rpSplit=itrr.next();
-            RepDemSplit split=new RepDemSplit();
-            split.setSplit(rpSplit.get("split").asText());
-            split.setNumberOfPlans(rpSplit.get("number").asInt());
-            splits.add(split);
-        }
-        System.out.println(districtPlans);
-        districtPlans.get(0).setDistricts(districts1);
-        districtPlans.get(0).setRepDemSplits(splits);
-        districtPlans.get(1).setDistricts(districts2);
-        districtPlans.get(2).setDistricts(districts3);
-        districtPlans.get(3).setDistricts(districts4);
-
+        districtPlans.get(0).setDistricts(districts);
+        districtPlans.get(0).setRepDemSplits(repDemSplits);
         List<BoxAndWhisker> boxAndWhiskers=new ArrayList<>();
-        JsonNode bwNode=objectNode.get("boxW");
-        Iterator<JsonNode> bwIterator=bwNode.iterator();
-        while(bwIterator.hasNext()){
-            JsonNode item=bwIterator.next();
+        JsonNode bw=objectNode.get("boxW");
+        for(JsonNode boxW:bw){
             BoxAndWhisker boxAndWhisker=new BoxAndWhisker();
-            boxAndWhisker.setMin(item.get("min").asDouble());
-            boxAndWhisker.setMax(item.get("max").asDouble());
-            boxAndWhisker.setMedian(item.get("median").asDouble());
-            boxAndWhisker.setFirstQ(item.get("firstQ").asDouble());
-            boxAndWhisker.setThirdQ(item.get("thirdQ").asDouble());
-            boxAndWhisker.setType(InterestType.valueOf(item.get("type").asText()));
+            boxAndWhisker.setType(InterestType.valueOf(boxW.get("type").asText()));
+            boxAndWhisker.setMin(boxW.get("min").asDouble());
+            boxAndWhisker.setMax(boxW.get("max").asDouble());
+            boxAndWhisker.setFirstQ(boxW.get("firstQ").asDouble());
+            boxAndWhisker.setMedian(boxW.get("median").asDouble());
+            boxAndWhisker.setThirdQ(boxW.get("thirdQ").asDouble());
             boxAndWhiskers.add(boxAndWhisker);
         }
-
-        Ensemble ensemble=new Ensemble();
-        ensemble.setDistrictPlans(districtPlans);
-        ensemble.setBoxAndWhiskers(boxAndWhiskers);
+        List<Ensemble> ensembles=new ArrayList<>();
+        JsonNode ensemble_arr=objectNode.get("ensembles");
+        for (JsonNode ensemble : ensemble_arr) {
+            Ensemble newEnsemble = new Ensemble();
+            newEnsemble.setType(ensemble.get("type").asText());
+            ensembles.add(newEnsemble);
+        }
+        ensembles.get(0).setDistrictPlans(districtPlans);
+        ensembles.get(0).setBoxAndWhiskers(boxAndWhiskers);
+        StateDemographic whiteDemographic=new StateDemographic();
+        whiteDemographic.setType(InterestType.CAUCASIAN);
+        whiteDemographic.setPopulation(objectNode.get("caucasian").asInt());
+        StateDemographic africanDemographic=new StateDemographic();
+        africanDemographic.setType(InterestType.AFRICAN);
+        africanDemographic.setPopulation(objectNode.get("africanAmerican").asInt());
+        StateDemographic asianDemographic=new StateDemographic();
+        asianDemographic.setType(InterestType.ASIAN);
+        asianDemographic.setPopulation(objectNode.get("asian").asInt());
+        StateDemographic latinoDemographic=new StateDemographic();
+        latinoDemographic.setType(InterestType.LATINO);
+        latinoDemographic.setPopulation(objectNode.get("latino").asInt());
+        List<StateDemographic> stateDemographics = new ArrayList<>(Arrays.asList(whiteDemographic, africanDemographic, asianDemographic, latinoDemographic));
 
         State newState=new State(objectNode.get("state").asText());
-        newState.setEnsemble(ensemble);
-        newState.setStateDemographic(stateDemographic);
-
+        newState.setStateDemographics(stateDemographics);
+        newState.setEnsembles(ensembles);
         return stateService.addState(newState);
     }
-
 }

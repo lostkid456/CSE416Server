@@ -1,6 +1,7 @@
 package com.server.server.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.server.server.model.enums.InterestType;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -20,7 +21,8 @@ public class StateDemographic {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name="demographic_id")
-    private List<Demographic> demographics;
+    @Enumerated(EnumType.STRING)
+    private InterestType type;
+
+    private int population;
 }

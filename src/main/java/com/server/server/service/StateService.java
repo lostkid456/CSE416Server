@@ -46,7 +46,7 @@ public class StateService {
         try{
             ObjectMapper objectMapper=new ObjectMapper();
             File stateMap=
-                    ResourceUtils.getFile("classpath:geoJson/"+currState.getEnsemble().getDistrictPlans().
+                    ResourceUtils.getFile("classpath:geoJson/"+currState.getEnsembles().get(0).getDistrictPlans().
                             get(0).getDistrictBoundaryPath());
             return objectMapper.readValue(stateMap, new TypeReference<>() {
             });

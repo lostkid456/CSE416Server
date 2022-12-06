@@ -21,6 +21,6 @@ public class BoxAndWhisker {
     private double firstQ;
     private double thirdQ;
 
-    @Enumerated(EnumType.ORDINAL)
+    @Enumerated(EnumType.STRING)
     private InterestType type;
 }

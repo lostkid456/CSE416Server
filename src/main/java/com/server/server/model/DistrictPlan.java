@@ -18,9 +18,9 @@ public class DistrictPlan {
 
     private boolean isMMD;
 
-    private int numberOfDemocrats;
+    private int numberOfDemocrat;
 
-    private int numberOfRepublicans;
+    private int numberOfRepublican;
 
     private int numberOfMajorityMinority;
 

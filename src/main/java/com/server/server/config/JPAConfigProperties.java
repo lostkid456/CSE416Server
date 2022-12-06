@@ -7,5 +7,6 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public class JPAConfigProperties {
     private boolean showsql;
     private Hibernate ddlauto;
+    private Hibernate namingstrategy;
     private String databaseplatform;
 }

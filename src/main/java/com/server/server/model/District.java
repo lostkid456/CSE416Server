@@ -11,6 +11,7 @@ import java.util.Objects;
 @Setter
 @RequiredArgsConstructor
 @Entity
+@Table(name = "Districts")
 public class District {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,7 +19,7 @@ public class District {
 
     private int number;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name="districtDemographic_id",referencedColumnName = "id")
-    private DistrictDemographic districtDemographic;
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name="district_id")
+    private List<DistrictDemographic> districtDemographic;
 }

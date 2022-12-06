@@ -1,5 +1,6 @@
 package com.server.server.model;
 
+import com.server.server.model.enums.InterestType;
 import lombok.*;
 import org.hibernate.Hibernate;
 
@@ -11,12 +12,14 @@ import java.util.Objects;
 @Setter
 @RequiredArgsConstructor
 @Entity
+@Table(name = "DistrictDemographics")
 public class DistrictDemographic {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name="demographic_id")
-    private List<Demographic> demographics;
+    @Enumerated(EnumType.STRING)
+    private InterestType type;
+
+    private int population;
 }

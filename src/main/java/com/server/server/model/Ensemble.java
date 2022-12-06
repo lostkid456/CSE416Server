@@ -17,6 +17,8 @@ public class Ensemble{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    private String type;
+
     @OneToMany(
             cascade = CascadeType.ALL,
             fetch = FetchType.LAZY
