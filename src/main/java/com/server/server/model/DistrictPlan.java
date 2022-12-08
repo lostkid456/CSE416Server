@@ -18,6 +18,10 @@ public class DistrictPlan {
 
     private boolean isMMD;
 
+    private String pattern;
+
+    private String districtType;
+
     private int numberOfDemocrat;
 
     private int numberOfRepublican;
