@@ -19,6 +19,8 @@ public class Ensemble{
 
     private String type;
 
+
+
     @OneToMany(
             cascade = CascadeType.ALL,
             fetch = FetchType.LAZY
@@ -32,4 +34,11 @@ public class Ensemble{
     )
     @JoinColumn(name = "ensemble_id")
     private List<BoxAndWhisker> boxAndWhiskers;
+
+    @OneToMany(
+            cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY
+    )
+    @JoinColumn(name = "ensemble_id")
+    private List<RepDemSplit> repDemSplits;
 }

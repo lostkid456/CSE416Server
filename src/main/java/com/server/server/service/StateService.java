@@ -3,6 +3,7 @@ package com.server.server.service;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.server.server.model.DistrictPlan;
+import com.server.server.model.Ensemble;
 import com.server.server.model.State;
 import com.server.server.repository.DistrictPlanRepository;
 import com.server.server.repository.EnsembleRepository;
@@ -19,11 +20,6 @@ import java.util.Map;
 public class StateService {
     @Autowired
     private StateRepository stateRepository;
-    @Autowired
-    private EnsembleRepository ensembleRepository;
-    @Autowired
-    private DistrictPlanRepository districtPlanRepository;
-
 
     public Map<String,Object> getHomeMap(){
         try{
@@ -51,7 +47,7 @@ public class StateService {
             return objectMapper.readValue(stateMap, new TypeReference<>() {
             });
         }catch (IOException e){
-            System.out.println("OH NO");
+            System.out.println(e.getMessage());
         }
         return null;
     }

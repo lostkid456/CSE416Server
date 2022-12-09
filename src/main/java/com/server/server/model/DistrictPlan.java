@@ -20,13 +20,15 @@ public class DistrictPlan {
 
     private String pattern;
 
-    private String districtType;
+    private String planType;
 
     private int numberOfDemocrat;
 
     private int numberOfRepublican;
 
     private int numberOfMajorityMinority;
+
+    private String split;
 
     private String districtBoundaryPath;
 
@@ -36,11 +38,4 @@ public class DistrictPlan {
     )
     @JoinColumn(name = "district_plan_id")
     private List<District> districts;
-
-    @OneToMany(
-            cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY
-    )
-    @JoinColumn(name = "district_plan_id")
-    private List<RepDemSplit> repDemSplits;
 }

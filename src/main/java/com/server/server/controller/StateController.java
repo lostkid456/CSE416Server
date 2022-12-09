@@ -39,17 +39,17 @@ public class StateController {
     }
 
     @GetMapping("/smd/graphs/{state}")
-    public State getSMDGraphs(@PathVariable String state){
+    public Ensemble getSMDGraphs(@PathVariable String state){
         State currState=stateService.getState(state);
-
-        return currState;
+        Ensemble smd=currState.getEnsembles().get(0);
+        return smd;
     }
 
     @GetMapping("/mmd/graphs/{state}")
-    public State getMMDGraphs(@PathVariable String state){
+    public Ensemble getMMDGraphs(@PathVariable String state){
         State currState=stateService.getState(state);
-
-        return currState;
+        Ensemble mmd=currState.getEnsembles().get(1);
+        return mmd;
     }
 
 }
