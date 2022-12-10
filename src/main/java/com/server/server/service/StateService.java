@@ -24,7 +24,7 @@ public class StateService {
     public Map<String,Object> getHomeMap(){
         try{
             ObjectMapper objectMapper=new ObjectMapper();
-            File homeMap= ResourceUtils.getFile("classpath:geoJson/tl_2022_us_state.json");
+            File homeMap= ResourceUtils.getFile("classpath:tl_2022_us_state.json");
             return objectMapper.readValue(homeMap, new TypeReference<>() {});
         }catch(IOException e){
             System.out.print(e.getMessage());
@@ -42,7 +42,7 @@ public class StateService {
         try{
             ObjectMapper objectMapper=new ObjectMapper();
             File stateMap=
-                    ResourceUtils.getFile("classpath:geoJson/"+currState.getEnsembles().get(0).getDistrictPlans().
+                    ResourceUtils.getFile("classpath:"+currState.getEnsembles().get(0).getDistrictPlans().
                             get(0).getDistrictBoundaryPath());
             return objectMapper.readValue(stateMap, new TypeReference<>() {
             });

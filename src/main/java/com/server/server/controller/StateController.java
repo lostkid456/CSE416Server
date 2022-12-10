@@ -1,10 +1,8 @@
 package com.server.server.controller;
 
-
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.databind.util.JSONPObject;
 import com.opencsv.CSVReader;
 import com.server.server.model.*;
 import com.server.server.model.enums.InterestType;
@@ -16,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.File;
 import java.io.FileReader;
-import java.io.IOException;
 import java.util.*;
 
 @CrossOrigin(origins ={"http://localhost:3000","http://127.0.0.1:5173/"} )
@@ -72,11 +69,12 @@ public class StateController {
         enactedPlan.setMMD(false);
         enactedPlan.setPattern("smd");
         enactedPlan.setSplit("");
-        enactedPlan.setPlanType("enacted");
+        enactedPlan.setPlanType("smd/enacted");
         List<District> enactedDistricts=new ArrayList<>();
 
         CSVReader csvReader;
         String[] line;
+
 
         String state=objectNode.get("state").asText();
         try {
@@ -90,7 +88,7 @@ public class StateController {
             democrat=0;
             majorityMinority=0;
             if (state.equals("Ohio")) {
-                csvReader = new CSVReader(new FileReader(ResourceUtils.getFile("enacted/Ohio/" +
+                csvReader = new CSVReader(new FileReader(ResourceUtils.getFile("classpath:smd/enacted/Ohio/" +
                                                                                        "Ohio_Enacted_Demographics.csv")));
                 csvReader.skip(1);
                 while((line=csvReader.readNext())!=null){
@@ -126,13 +124,13 @@ public class StateController {
                 enactedPlan.setNumberOfDemocrat(democrat);
                 enactedPlan.setNumberOfMajorityMinority(majorityMinority);
                 smdDistrictPlans.add(enactedPlan);
-                enactedPlan.setDistrictBoundaryPath("enacted/Ohio/oh_cong_adopted_2022.json");
+                enactedPlan.setDistrictBoundaryPath("smd/enacted/Ohio/oh_cong_adopted_2022.json");
 
 //                File dir=new File(ResourceUtils.getFile(""))
 
                 newState.setState("OH");
             } else if (state.equals("NorthCarolina")) {
-                csvReader = new CSVReader(new FileReader(ResourceUtils.getFile("enacted/NorthCarolina/" +
+                csvReader = new CSVReader(new FileReader(ResourceUtils.getFile("classpath:smd/enacted/NorthCarolina/" +
                                                                                        "NorthCarolina_Enacted_Demographics.csv")));
                 csvReader.skip(1);
                 while((line=csvReader.readNext())!=null){
@@ -168,19 +166,21 @@ public class StateController {
                 enactedPlan.setNumberOfDemocrat(democrat);
                 enactedPlan.setNumberOfMajorityMinority(majorityMinority);
                 smdDistrictPlans.add(enactedPlan);
-                enactedPlan.setDistrictBoundaryPath("enacted/NorthCarolina/NC_SMmap2_Statewide.json");
+                enactedPlan.setDistrictBoundaryPath("smd/enacted/NorthCarolina/NC_SMmap2_Statewide.json");
 
-                File dir = new File(ResourceUtils.getFile("classpath:geoJson/NorthCarolina").getAbsolutePath());
+                File dir = new File(ResourceUtils.getFile("classpath:smd/geoJson/NorthCarolina").getAbsolutePath());
                 System.out.println(dir.getPath());
                 File[] directoryListing=dir.listFiles();
                 for(File file:directoryListing){
                     String name= file.getName();
+                    DistrictPlan districtPlan=new DistrictPlan();
+//                    ObjectMapper objectMapper
                 }
 
 
                 newState.setState("NC");
             } else {
-                csvReader = new CSVReader(new FileReader(ResourceUtils.getFile("enacted/Virginia/" +
+                csvReader = new CSVReader(new FileReader(ResourceUtils.getFile("classpath:smd/enacted/Virginia/" +
                                                                                        "Virginia_Enacted_Demographic.csv")));
                 csvReader.skip(1);
                 while((line=csvReader.readNext())!=null){
@@ -216,7 +216,7 @@ public class StateController {
                 enactedPlan.setNumberOfDemocrat(democrat);
                 enactedPlan.setNumberOfMajorityMinority(majorityMinority);
                 smdDistrictPlans.add(enactedPlan);
-                enactedPlan.setDistrictBoundaryPath("enacted/Virginia/SCV FINAL CD.json");
+                enactedPlan.setDistrictBoundaryPath("smd/enacted/Virginia/SCV FINAL CD.json");
 
 
 
