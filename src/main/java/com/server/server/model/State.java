@@ -31,4 +31,11 @@ public class State {
     @JoinColumn(name="state_id")
     private List<StateDemographic> stateDemographics;
 
+    public int getTotalPopulation() {
+        int population=0;
+        for (StateDemographic demographic:stateDemographics){
+            population+=demographic.getPopulation();
+        }
+        return population;
+    }
 }

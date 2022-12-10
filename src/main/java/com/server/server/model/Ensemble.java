@@ -19,7 +19,21 @@ public class Ensemble{
 
     private String type;
 
+    private int averageWhitePopulation;
 
+    private int averageAsianPopulation;
+
+    private int averageAfricanPopulation;
+
+    private int averageLatinoPopulation;
+
+    private double averagePolsbyPopper;
+
+    private int averageMajorityMinority;
+
+    private int averageRepublican;
+
+    private int averageDemocrat;
 
     @OneToMany(
             cascade = CascadeType.ALL,

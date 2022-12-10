@@ -21,5 +21,5 @@ public class District {
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name="district_id")
-    private List<DistrictDemographic> districtDemographic;
+    private List<DistrictDemographic> districtDemographics;
 }
