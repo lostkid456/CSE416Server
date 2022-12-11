@@ -19,6 +19,14 @@ public class District {
 
     private int number;
 
+    private int total;
+
+    private double compactness;
+
+    private int demSafe;
+
+    private int repSave;
+
     @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     @JoinColumn(name="district_id")
     private List<DistrictDemographic> districtDemographics;

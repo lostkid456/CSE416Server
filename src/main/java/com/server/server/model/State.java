@@ -20,7 +20,6 @@ public class State {
     @NonNull
     private String state;
 
-    @Transient
     private int totalPopulation;
 
     @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
@@ -31,11 +30,4 @@ public class State {
     @JoinColumn(name="state_id")
     private List<StateDemographic> stateDemographics;
 
-    public int getTotalPopulation() {
-        int population=0;
-        for (StateDemographic demographic:stateDemographics){
-            population+=demographic.getPopulation();
-        }
-        return population;
-    }
 }

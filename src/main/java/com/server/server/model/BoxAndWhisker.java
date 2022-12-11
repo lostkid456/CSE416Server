@@ -16,6 +16,8 @@ public class BoxAndWhisker {
     private int id;
 
     private int number;
+    private double mean;
+    private double std;
     private double min;
     private double max;
     private double median;

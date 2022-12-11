@@ -19,6 +19,8 @@ public class Ensemble{
 
     private String type;
 
+    private int averagePopulation;
+
     private int averageWhitePopulation;
 
     private int averageAsianPopulation;
