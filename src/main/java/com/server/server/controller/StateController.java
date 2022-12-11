@@ -43,6 +43,7 @@ public class StateController {
     public Ensemble getSMDGraphs(@PathVariable String state){
         State currState=stateService.getState(state);
         Ensemble smd=currState.getEnsembles().get(0);
+        List<RepDemSplit> repDemSplits=smd.getRepDemSplits();
         return smd;
     }
 
