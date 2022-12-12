@@ -2,6 +2,7 @@ package com.server.server.service;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.server.server.model.District;
 import com.server.server.model.DistrictPlan;
 import com.server.server.model.Ensemble;
 import com.server.server.model.State;
@@ -56,6 +57,27 @@ public class StateService {
         return null;
     }
 
+    public Map<String,Object> getSMDExtremeDem(String state){
+        State currState=stateRepository.findByState(state);
+        List<Ensemble> ensembleList=currState.getEnsembles();
+        for(Ensemble ensemble:ensembleList){
+            if(ensemble.getType().equals("SMD")){
+                List<DistrictPlan> districtPlans=ensemble.getDistrictPlans();
+                for(DistrictPlan districtPlan:districtPlans){
+                    if(districtPlan.getPlanType().contains("dem")){
+                        try{
+                            ObjectMapper objectMapper=new ObjectMapper();
+                            File averageMap=ResourceUtils.getFile("classpath:"+districtPlan.getDistrictBoundaryPath());
+                            return objectMapper.readValue(averageMap,new TypeReference<>(){});
+                        }catch (IOException e){
+                            System.out.println(e.getMessage());
+                        }
+                    }
+                }
+            }
+        }
+        return null;
+    }
     public Map<String,Object> getMMDAverageMap(String state,String type){
         State currenState=stateRepository.findByState(state);
         List<Ensemble> ensembleList=currenState.getEnsembles();

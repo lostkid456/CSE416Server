@@ -39,6 +39,11 @@ public class StateController {
         return stateService.getStateMap(state);
     }
 
+    @GetMapping("/smd/extremeRep/map/{state}")
+    public Map<String,Object> getSMDExtremeDem(@PathVariable String state){
+        return stateService.getSMDExtremeDem(state);
+    }
+
     @GetMapping("/mmd/average/map/{state}/{type}")
     public Map<String,Object> getMMDAverageMap(@PathVariable String state,@PathVariable String type){
         return stateService.getMMDAverageMap(state,type);
