@@ -78,6 +78,17 @@ public class StateController {
         return boxAndWhiskers;
     }
 
+    @GetMapping("/mmd/boxAndWhiskers/{state}")
+    public List<List<BoxAndWhisker>> getMMDBoxAndWhiskers(@PathVariable String state){
+        State currState=stateService.getState(state);
+        Ensemble mmd1=currState.getEnsembles().get(0);
+        Ensemble mmd2=currState.getEnsembles().get(1);
+        List<List<BoxAndWhisker>> boxAndWhiskersArray = new ArrayList<List<BoxAndWhisker>>();
+        boxAndWhiskersArray.add(mmd1.getBoxAndWhiskers());
+        boxAndWhiskersArray.add(mmd2.getBoxAndWhiskers());
+        return boxAndWhiskersArray;
+    }
+
     @GetMapping("/smd/{state}")
     public Ensemble getSMD(@PathVariable String state){
         State currState=stateService.getState(state);

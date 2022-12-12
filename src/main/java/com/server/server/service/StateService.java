@@ -42,7 +42,7 @@ public class StateService {
         try{
             ObjectMapper objectMapper=new ObjectMapper();
             File stateMap=
-                    ResourceUtils.getFile("classpath:"+currState.getEnsembles().get(0).getDistrictPlans().
+                    ResourceUtils.getFile("classpath:"+currState.getEnsembles().get(2).getDistrictPlans().
                             get(0).getDistrictBoundaryPath());
             return objectMapper.readValue(stateMap, new TypeReference<>() {
             });
