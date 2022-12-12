@@ -39,10 +39,15 @@ public class StateController {
         return stateService.getStateMap(state);
     }
 
+    @GetMapping("/ensemble/{state}")
+    public List<Ensemble> getEnsemble(@PathVariable String state){
+        return stateService.getState(state).getEnsembles();
+    }
+
     @GetMapping("/smd/summary/{state}")
     public Ensemble getSMDSummary(@PathVariable String state){
         State currState=stateService.getState(state);
-        Ensemble smd=currState.getEnsembles().get(0);
+        Ensemble smd=currState.getEnsembles().get(2);
         smd.setDistrictPlans(null);
         smd.setBoxAndWhiskers(null);
         smd.setRepDemSplits(null);
@@ -52,7 +57,7 @@ public class StateController {
     @GetMapping("/smd/districtPlans/{state}")
     public List<DistrictPlan> getCurrentDemographic(@PathVariable String state){
         State currState=stateService.getState(state);
-        Ensemble smd = currState.getEnsembles().get(0);
+        Ensemble smd = currState.getEnsembles().get(2);
         List<DistrictPlan> districtPlans = smd.getDistrictPlans();
         return districtPlans;
     }
@@ -60,7 +65,7 @@ public class StateController {
     @GetMapping("/smd/barGraph/{state}")
     public List<RepDemSplit> getSMDGraphs(@PathVariable String state){
         State currState=stateService.getState(state);
-        Ensemble smd=currState.getEnsembles().get(0);
+        Ensemble smd=currState.getEnsembles().get(2);
         List<RepDemSplit> repDemSplits=smd.getRepDemSplits();
         return repDemSplits;
     }
@@ -68,7 +73,7 @@ public class StateController {
     @GetMapping("/smd/boxAndWhiskers/{state}")
     public List<BoxAndWhisker> getSMDBoxAndWhiskers(@PathVariable String state){
         State currState=stateService.getState(state);
-        Ensemble smd=currState.getEnsembles().get(0);
+        Ensemble smd=currState.getEnsembles().get(2);
         List<BoxAndWhisker> boxAndWhiskers=smd.getBoxAndWhiskers();
         return boxAndWhiskers;
     }
@@ -76,7 +81,7 @@ public class StateController {
     @GetMapping("/smd/{state}")
     public Ensemble getSMD(@PathVariable String state){
         State currState=stateService.getState(state);
-        Ensemble smd=currState.getEnsembles().get(0);
+        Ensemble smd=currState.getEnsembles().get(3);
         return smd;
     }
 
