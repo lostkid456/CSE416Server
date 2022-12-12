@@ -39,6 +39,11 @@ public class StateController {
         return stateService.getStateMap(state);
     }
 
+    @GetMapping("/mmd/average/map/{state}/{type}")
+    public Map<String,Object> getMMDAverageMap(@PathVariable String state,@PathVariable String type){
+        return stateService.getMMDAverageMap(state,type);
+    }
+
     @GetMapping("/ensemble/{state}")
     public List<Ensemble> getEnsemble(@PathVariable String state){
         return stateService.getState(state).getEnsembles();
