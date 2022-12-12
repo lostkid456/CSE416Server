@@ -39,11 +39,44 @@ public class StateController {
         return stateService.getStateMap(state);
     }
 
-    @GetMapping("/smd/graphs/{state}")
-    public Ensemble getSMDGraphs(@PathVariable String state){
+    @GetMapping("/smd/summary/{state}")
+    public Ensemble getSMDSummary(@PathVariable String state){
+        State currState=stateService.getState(state);
+        Ensemble smd=currState.getEnsembles().get(0);
+        smd.setDistrictPlans(null);
+        smd.setBoxAndWhiskers(null);
+        smd.setRepDemSplits(null);
+        return smd;
+    }
+
+    @GetMapping("/smd/districtPlans/{state}")
+    public List<DistrictPlan> getCurrentDemographic(@PathVariable String state){
+        State currState=stateService.getState(state);
+        Ensemble smd = currState.getEnsembles().get(0);
+        List<DistrictPlan> districtPlans = smd.getDistrictPlans();
+        return districtPlans;
+    }
+
+    @GetMapping("/smd/barGraph/{state}")
+    public List<RepDemSplit> getSMDGraphs(@PathVariable String state){
         State currState=stateService.getState(state);
         Ensemble smd=currState.getEnsembles().get(0);
         List<RepDemSplit> repDemSplits=smd.getRepDemSplits();
+        return repDemSplits;
+    }
+
+    @GetMapping("/smd/boxAndWhiskers/{state}")
+    public List<BoxAndWhisker> getSMDBoxAndWhiskers(@PathVariable String state){
+        State currState=stateService.getState(state);
+        Ensemble smd=currState.getEnsembles().get(0);
+        List<BoxAndWhisker> boxAndWhiskers=smd.getBoxAndWhiskers();
+        return boxAndWhiskers;
+    }
+
+    @GetMapping("/smd/{state}")
+    public Ensemble getSMD(@PathVariable String state){
+        State currState=stateService.getState(state);
+        Ensemble smd=currState.getEnsembles().get(0);
         return smd;
     }
 
