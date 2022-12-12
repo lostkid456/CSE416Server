@@ -39,6 +39,16 @@ public class StateController {
         return stateService.getStateMap(state);
     }
 
+    @GetMapping("/smd/summary/{state}")
+    public Ensemble getSMDSummary(@PathVariable String state){
+        State currState=stateService.getState(state);
+        Ensemble smd=currState.getEnsembles().get(0);
+        smd.setDistrictPlans(null);
+        smd.setBoxAndWhiskers(null);
+        smd.setRepDemSplits(null);
+        return smd;
+    }
+
     @GetMapping("/smd/districtPlans/{state}")
     public List<DistrictPlan> getCurrentDemographic(@PathVariable String state){
         State currState=stateService.getState(state);
