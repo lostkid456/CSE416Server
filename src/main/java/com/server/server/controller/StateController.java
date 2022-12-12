@@ -61,7 +61,6 @@ public class StateController {
 
         List<Ensemble> ensembles = new ArrayList<>();
         Ensemble smd = new Ensemble();
-        Ensemble mmd = new Ensemble();
 
         List<StateDemographic> stateDemographics = new ArrayList<>();
 
@@ -81,11 +80,22 @@ public class StateController {
         CSVReader boxAndWhiskerCsvReader;
         CSVReader summaryCsvReader;
         CSVReader splitCsvReader;
+        CSVReader opportunityDistrictCsvReader;
 
         String geoJsonPath;
 
         File geoJsonDir;
         File boxAndWhiskerDir;
+
+        CSVReader mmdBoxAndWhiskerCsvReader;
+        CSVReader mmdSummaryCsvReader;
+
+        String mmdPath;
+
+        File mmdDir;
+
+        File mmdGeoJsonDir;
+        File mmdBoxAndWhiskerDir;
 
         String[] line;
 
@@ -111,6 +121,10 @@ public class StateController {
                                                                                             "OH_SMD_Summary.csv")));
                 splitCsvReader=new CSVReader(new FileReader(ResourceUtils.getFile("classpath:smd/split/Ohio/" +
                                                                                           "OH_political_split.csv")));
+                opportunityDistrictCsvReader=
+                        new CSVReader(new FileReader(ResourceUtils.getFile("classpath:smd/summary/Ohio/OH_opportunity_district.csv")));
+                mmdDir=new File(ResourceUtils.getFile("classpath:mmd/Ohio/").getAbsolutePath());
+                mmdPath="mmd/Ohio/";
                 newState.setState("OH");
             }else if(state.equals("VA")){
                 enactedCsvReader=new CSVReader(new FileReader(ResourceUtils.getFile("classpath:smd/enacted" +
@@ -125,6 +139,11 @@ public class StateController {
                                                                                             "VA_SMD_Summary.csv")));
                 splitCsvReader=new CSVReader(new FileReader(ResourceUtils.getFile("classpath:smd/split/Virginia/" +
                                                                                           "VA_political_split.csv")));
+                opportunityDistrictCsvReader=
+                        new CSVReader(new FileReader(ResourceUtils.getFile("classpath:smd/summary/Virginia" +
+                                                                                   "/VA_opportunity_district.csv")));
+                mmdDir=new File(ResourceUtils.getFile("classpath:mmd/Virginia/").getAbsolutePath());
+                mmdPath="mmd/Virginia/";
                 newState.setState("VA");
             }else{
                 enactedCsvReader=new CSVReader(new FileReader(ResourceUtils.getFile("classpath:smd/enacted" +
@@ -141,6 +160,11 @@ public class StateController {
                                                                                             "NC_SMD_Summary.csv")));
                 splitCsvReader=new CSVReader(new FileReader(ResourceUtils.getFile("classpath:smd/split/NorthCarolina/" +
                                                                                           "NC_political_split.csv")));
+                opportunityDistrictCsvReader=
+                        new CSVReader(new FileReader(ResourceUtils.getFile("classpath:smd/summary/NorthCarolina" +
+                                                                                   "/NC_SMD_Summary.csv")));
+                mmdDir=new File(ResourceUtils.getFile("classpath:mmd/NorthCarolina/").getAbsolutePath());
+                mmdPath="mmd/NorthCarolina/";
                 newState.setState("NC");
             }
             enactedCsvReader.skip(1);
@@ -267,6 +291,7 @@ public class StateController {
                     district.setNumber(Integer.parseInt(districtNum));
                     district.setDemSafe(demSave.intValue());
                     district.setRepSave(repSave.intValue());
+                    district.setSplit(drSplit);
                     districts.add(district);
                 }
                 districtPlan.setDistricts(districts);
@@ -288,10 +313,10 @@ public class StateController {
                 List<BoxAndWhisker> boxAndWhiskers=new ArrayList<>();
                 int counter=0;
                 while((line=boxAndWhiskerCsvReader.readNext())!=null){
-                    System.out.println("Box and Whisker: "+Arrays.toString(line));
                     if(counter==0){
                         for(int i=1;i<line.length;i++){
                             BoxAndWhisker boxAndWhisker=new BoxAndWhisker();
+                            boxAndWhisker.setPattern("SMD");
                             if(name.contains("african")){
                                 boxAndWhisker.setType(InterestType.AFRICAN);
                             }else if(name.contains("asian")){
@@ -304,35 +329,34 @@ public class StateController {
                         counter=1;
                     }else{
                         System.out.println("BB :"+Arrays.toString(line));
-                        if(line[0].equals("mean")){
-                            for(int i=1;i<line.length;i++){
-                                boxAndWhiskers.get(i-1).setMean(Double.parseDouble(line[i]));
-                            }
-                        }else if(line[0].equals("std")){
-                            for(int i=1;i<line.length;i++){
-                                boxAndWhiskers.get(i-1).setStd(Double.parseDouble(line[i]));
-                            }
-                        }else if(line[0].equals("25%")){
-                            for(int i=1;i<line.length;i++){
-                                boxAndWhiskers.get(i-1).setFirstQ(Double.parseDouble(line[i]));
-                            }
-                        }
-                        else if(line[0].equals("min")){
-                            for(int i=1;i<line.length;i++){
-                                boxAndWhiskers.get(i-1).setMin(Double.parseDouble(line[i]));
-                            }
-                        }else if(line[0].equals("50%")){
-                            for(int i=1;i<line.length;i++){
-                                boxAndWhiskers.get(i-1).setMedian(Double.parseDouble(line[i]));
-                            }
-                        }else if(line[0].equals("75%")){
-                            for(int i=1;i<line.length;i++){
-                                boxAndWhiskers.get(i-1).setThirdQ(Double.parseDouble(line[i]));
-                            }
-                        }else{
-                            for(int i=1;i<line.length;i++){
-                                boxAndWhiskers.get(i-1).setMax(Double.parseDouble(line[i]));
-                            }
+                        switch (line[0]) {
+                            case "25%":
+                                for (int i = 1; i < line.length; i++) {
+                                    boxAndWhiskers.get(i - 1).setFirstQ(Double.parseDouble(line[i]));
+                                }
+                                break;
+                            case "min":
+                                for (int i = 1; i < line.length; i++) {
+                                    boxAndWhiskers.get(i - 1).setMin(Double.parseDouble(line[i]));
+                                }
+                                break;
+                            case "50%":
+                                for (int i = 1; i < line.length; i++) {
+                                    boxAndWhiskers.get(i - 1).setMedian(Double.parseDouble(line[i]));
+                                }
+                                break;
+                            case "75%":
+                                for (int i = 1; i < line.length; i++) {
+                                    boxAndWhiskers.get(i - 1).setThirdQ(Double.parseDouble(line[i]));
+                                }
+                                break;
+                            case "max":
+                                for (int i = 1; i < line.length; i++) {
+                                    boxAndWhiskers.get(i - 1).setMax(Double.parseDouble(line[i]));
+                                }
+                                break;
+                            default:
+                                break;
                         }
                     }
                 }
@@ -359,17 +383,220 @@ public class StateController {
                 repDemSplit.setSplit(line[1]);
                 smdRepDemSplits.add(repDemSplit);
             }
+            List<OpportunityRange> opportunityRanges=new ArrayList<>();
+            opportunityDistrictCsvReader.skip(1);
+            while((line=opportunityDistrictCsvReader.readNext())!=null){
+                OpportunityRange opportunityRange=new OpportunityRange();
+                int opportunityDistrictCount=Integer.parseInt(line[1]);
+                int planCount=Integer.parseInt(line[2]);
+                opportunityRange.setPlanCount(planCount);
+                opportunityRange.setOpportunityDistrictCount(opportunityDistrictCount);
+                opportunityRanges.add(opportunityRange);
+            }
+            smd.setOpportunityRanges(opportunityRanges);
             smd.setRepDemSplits(smdRepDemSplits);
             smd.setBoxAndWhiskers(smdBoxAndWhiskers);
+
+            directoryListing=mmdDir.listFiles();
+            for(File pattern:directoryListing){
+                String p=pattern.getName();
+                Ensemble ensemble=new Ensemble();
+                ensemble.setType("MMD-"+p);
+                List<DistrictPlan> mmdDistrictPlans=new ArrayList<>();
+                List<BoxAndWhisker> mmdBoxAndWhiskers=new ArrayList<>();
+                List<RepDemSplit> mmdRepDemSplits=new ArrayList<>();
+                File[] patternDir=pattern.listFiles();
+                for(File info:patternDir){
+                    if(info.getName().contains("boxandwhisker")){
+                        File[] bwDir=info.listFiles();
+                        int counter=0;
+                        for(File bw:bwDir){
+                            mmdBoxAndWhiskerCsvReader=new CSVReader(new FileReader(bw.getAbsolutePath()));
+                            mmdBoxAndWhiskerCsvReader.skip(1);
+                            while((line=mmdBoxAndWhiskerCsvReader.readNext())!=null){
+                                if(counter==0){
+                                    for(int i=1;i<line.length;i++){
+                                        BoxAndWhisker boxAndWhisker=new BoxAndWhisker();
+                                        boxAndWhisker.setPattern("MMD-"+p);
+                                        if(bw.getName().contains("african")){
+                                            boxAndWhisker.setType(InterestType.AFRICAN);
+                                        }else if(bw.getName().contains("asian")){
+                                            boxAndWhisker.setType(InterestType.ASIAN);
+                                        }else if(bw.getName().contains("hispanic")){
+                                            boxAndWhisker.setType(InterestType.LATINO);
+                                        }
+                                        mmdBoxAndWhiskers.add(boxAndWhisker);
+                                    }
+                                    counter=1;
+                                }else{
+                                    System.out.println("BB :"+Arrays.toString(line));
+                                    switch (line[0]) {
+                                        case "25%":
+                                            for (int i = 1; i < line.length; i++) {
+                                                mmdBoxAndWhiskers.get(i - 1).setFirstQ(Double.parseDouble(line[i]));
+                                            }
+                                            break;
+                                        case "min":
+                                            for (int i = 1; i < line.length; i++) {
+                                                mmdBoxAndWhiskers.get(i - 1).setMin(Double.parseDouble(line[i]));
+                                            }
+                                            break;
+                                        case "50%":
+                                            for (int i = 1; i < line.length; i++) {
+                                                mmdBoxAndWhiskers.get(i - 1).setMedian(Double.parseDouble(line[i]));
+                                            }
+                                            break;
+                                        case "75%":
+                                            for (int i = 1; i < line.length; i++) {
+                                                mmdBoxAndWhiskers.get(i - 1).setThirdQ(Double.parseDouble(line[i]));
+                                            }
+                                            break;
+                                        case "max":
+                                            for (int i = 1; i < line.length; i++) {
+                                                mmdBoxAndWhiskers.get(i - 1).setMax(Double.parseDouble(line[i]));
+                                            }
+                                            break;
+                                        default:
+                                            break;
+                                    }
+                                }
+                            }
+                        }
+                    }else if(info.getName().contains("geoJson")){
+                        File[] gJsonDir=info.listFiles();
+                        for(File gJson:gJsonDir){
+                            String name=gJson.getName();
+                            DistrictPlan districtPlan=new DistrictPlan();
+                            districtPlan.setMMD(true);
+                            districtPlan.setPattern(p);
+                            if(name.contains("extreme_dem")){
+                                districtPlan.setPlanType("mmd/extreme_dem");
+                            }else if(name.contains("extreme_rep")){
+                                districtPlan.setPlanType("mmd/extreme_rep");
+                            }else if(name.contains("least_majority")){
+                                districtPlan.setPlanType("mmd/least_majority");
+                            }else if(name.contains("most_majority")){
+                                districtPlan.setPlanType("mmd/most_majority");
+                            }else{
+                                districtPlan.setPlanType("mmd/average");
+                            }
+                            districtPlan.setDistrictBoundaryPath(mmdPath+p+"/geoJson/"+name);
+                            List<District> districts=new ArrayList<>();
+                            ObjectMapper objectMapper=new ObjectMapper();
+                            Map<String,Object> json=objectMapper.readValue(gJson,new TypeReference<>(){});
+                            ArrayList features=(ArrayList)json.get("features");
+                            int repV=0;
+                            int demV=0;
+                            int mMin=0;
+                            int demSaveTotal=0;
+                            int repSaveTotal=0;
+                            String drs="";
+                            for(Object feature:features){
+                                District district=new District();
+                                List<DistrictDemographic> demographics=new ArrayList<>();
+                                DistrictDemographic whiteDemo=new DistrictDemographic();
+                                DistrictDemographic asianDemo=new DistrictDemographic();
+                                DistrictDemographic africanDemo=new DistrictDemographic();
+                                DistrictDemographic latinoDemo=new DistrictDemographic();
+                                LinkedHashMap<String,Object> feat=(LinkedHashMap<String, Object>) feature;
+                                LinkedHashMap<String,Object> properties=(LinkedHashMap<String, Object>) feat.get("properties");
+                                String districtNum=(String)properties.get("District");
+                                Double totalPop=(Double)properties.get("TotalPop");
+                                Double whitePop=(Double) properties.get("WhitePop");
+                                Double asianPop=(Double)properties.get("AsianPop");
+                                Double africanPop=(Double) properties.get("AfricanPop");
+                                Double hispPop=(Double) properties.get("HispPop");
+                                Double demVote=(Double)properties.get("DemVote");
+                                Double repVote=(Double)properties.get("RepVote");
+                                String totalDRSplit=(String)properties.get("TotalDRSplit");
+                                String districtDRSplit=(String)properties.get("DistrictDRSplit");
+                                Double compactness=(Double)properties.get("Compactness");
+                                Double majorMin=(Double)properties.get("MajorMin");
+//                        Double minorRep=(Double)properties.get("MinorRep");
+                                drs=totalDRSplit;
+                                mMin=majorMin.intValue();
+                                Double demSave=(Double)properties.get("DemSave");
+                                Double repSave=(Double)properties.get("RepSave");
+                                repV+=repVote;
+                                demV+=demVote;
+                                demSaveTotal+=demSave;
+                                repSaveTotal+=repSave;
+                                whiteDemo.setType(InterestType.CAUCASIAN);
+                                whiteDemo.setPopulation(whitePop.intValue());
+                                asianDemo.setType(InterestType.ASIAN);
+                                asianDemo.setPopulation(asianPop.intValue());
+                                africanDemo.setType(InterestType.AFRICAN);
+                                africanDemo.setPopulation(africanPop.intValue());
+                                latinoDemo.setType(InterestType.LATINO);
+                                latinoDemo.setPopulation(hispPop.intValue());
+                                Collections.addAll(demographics,whiteDemo,asianDemo,africanDemo,latinoDemo);
+                                district.setDistrictDemographics(demographics);
+                                district.setCompactness(compactness);
+                                district.setTotal(totalPop.intValue());
+                                district.setNumber(Integer.parseInt(districtNum));
+                                district.setDemSafe(demSave.intValue());
+                                district.setRepSave(repSave.intValue());
+                                districts.add(district);
+                            }
+                            districtPlan.setNumberOfDemocrat(demV);
+                            districtPlan.setNumberOfRepublican(repV);
+                            districtPlan.setNumberOfMajorityMinority(mMin);
+                            districtPlan.setDistricts(districts);
+                            districtPlan.setSplit(drs);
+                            mmdDistrictPlans.add(districtPlan);
+                        }
+                    }else{
+                        File[] summaryDir=info.listFiles();
+                        for(File summary:summaryDir){
+                            CSVReader reader=new CSVReader(new FileReader(summary.getAbsolutePath()));
+                            reader.skip(1);
+                            if (summary.getName().contains("MMD")){
+                               while((line=reader.readNext())!=null){
+                                   ensemble.setAveragePopulation((int) Math.round(Double.parseDouble(line[3])));
+                                   ensemble.setAverageWhitePopulation((int) Math.round(Double.parseDouble(line[4])));
+                                   ensemble.setAverageAfricanPopulation((int) Math.round(Double.parseDouble(line[6])));
+                                   ensemble.setAverageAsianPopulation((int) Math.round(Double.parseDouble(line[5])));
+                                   ensemble.setAverageLatinoPopulation((int) Math.round(Double.parseDouble(line[7])));
+                                   ensemble.setAveragePolsbyPopper(Double.parseDouble(line[9]));
+                                   ensemble.setAverageMajorityMinority((int) Math.round(Double.parseDouble(line[8])));
+                                   ensemble.setAverageDemocrat((int) Math.round(Double.parseDouble(line[10])));
+                                   ensemble.setAverageRepublican((int) Math.round(Double.parseDouble(line[11])));
+                               }
+                            }else if(summary.getName().contains("opportunity")){
+                                List<OpportunityRange>opportunityRangeList=new ArrayList<>();
+                                while((line=reader.readNext())!=null){
+                                    OpportunityRange opportunityRange=new OpportunityRange();
+                                    opportunityRange.setOpportunityDistrictCount(Integer.parseInt(line[1]));
+                                    opportunityRange.setPlanCount(Integer.parseInt(line[2]));
+                                    opportunityRangeList.add(opportunityRange);
+                                    ensemble.setOpportunityRanges(opportunityRanges);
+                                }
+                            }else{
+                                List<RepDemSplit> repDemSplits=new ArrayList<>();
+                                while((line=reader.readNext())!=null){
+                                    RepDemSplit repDemSplit=new RepDemSplit();
+                                    repDemSplit.setSplit(line[1]);
+                                    repDemSplit.setNumberOfPlan(Integer.parseInt(line[2]));
+                                    repDemSplits.add(repDemSplit);
+                                }
+                                ensemble.setRepDemSplits(repDemSplits);
+                            }
+                        }
+                    }
+                }
+                ensemble.setRepDemSplits(mmdRepDemSplits);
+                ensemble.setBoxAndWhiskers(mmdBoxAndWhiskers);
+                ensemble.setDistrictPlans(mmdDistrictPlans);
+                ensembles.add(ensemble);
+            }
+
         }catch (Exception e){
             System.out.println(e.getMessage());
         }
         smdDistrictPlans.add(enactedPlan);
         smd.setDistrictPlans(smdDistrictPlans);
         smd.setType("SMD");
-        mmd.setType("MMD");
         ensembles.add(smd);
-        ensembles.add(mmd);
         newState.setEnsembles(ensembles);
         newState.setStateDemographics(stateDemographics);
         return stateService.addState(newState);

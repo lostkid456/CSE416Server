@@ -57,4 +57,11 @@ public class Ensemble{
     )
     @JoinColumn(name = "ensemble_id")
     private List<RepDemSplit> repDemSplits;
+
+    @OneToMany(
+            cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY
+    )
+    @JoinColumn(name="ensemble_id")
+    private List<OpportunityRange> opportunityRanges;
 }

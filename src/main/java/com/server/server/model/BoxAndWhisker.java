@@ -15,9 +15,7 @@ public class BoxAndWhisker {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    private int number;
-    private double mean;
-    private double std;
+    private String pattern;
     private double min;
     private double max;
     private double median;

@@ -27,6 +27,8 @@ public class District {
 
     private int repSave;
 
+    private String split;
+
     @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     @JoinColumn(name="district_id")
     private List<DistrictDemographic> districtDemographics;

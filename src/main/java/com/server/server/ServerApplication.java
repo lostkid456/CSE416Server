@@ -25,5 +25,18 @@ import java.util.*;
 public class ServerApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(ServerApplication.class, args);
+//		try {
+//			File mmd = new File(ResourceUtils.getFile("classpath:mmd/NorthCarolina").getAbsolutePath());
+//			File[] dirListing=mmd.listFiles();
+//			for(File file:dirListing){
+//				System.out.println(file.getName());
+//				File[] mmdGroup=file.listFiles();
+//				for(File mmdG:mmdGroup){
+//					System.out.println(mmdG.getName());
+//				}
+//			}
+//		}catch (Exception e){
+//			System.out.println(e.getMessage());
+//		}
 	}
 }
