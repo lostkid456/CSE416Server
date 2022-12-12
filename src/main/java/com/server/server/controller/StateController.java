@@ -259,15 +259,15 @@ public class StateController {
                 DistrictPlan districtPlan=new DistrictPlan();
                 districtPlan.setPattern("smd");
                 if(name.contains("extreme_dem")){
-                    districtPlan.setPlanType("smd/extreme_dem");
+                    districtPlan.setPlanType("SMD/extreme_dem");
                 }else if(name.contains("extreme_rep")){
-                    districtPlan.setPlanType("smd/extreme_rep");
+                    districtPlan.setPlanType("SMD/extreme_rep");
                 }else if(name.contains("least_majority")){
-                    districtPlan.setPlanType("smd/least_majority");
+                    districtPlan.setPlanType("SMD/least_majority");
                 }else if(name.contains("most_majority")){
-                    districtPlan.setPlanType("smd/most_majority");
+                    districtPlan.setPlanType("SMD/most_majority");
                 }else{
-                    districtPlan.setPlanType("smd/random");
+                    districtPlan.setPlanType("SMD/random");
                 }
                 districtPlan.setDistrictBoundaryPath(file.getAbsolutePath());
                 List<District> districts=new ArrayList<>();
@@ -503,15 +503,15 @@ public class StateController {
                             districtPlan.setMMD(true);
                             districtPlan.setPattern(p);
                             if(name.contains("extreme_dem")){
-                                districtPlan.setPlanType("mmd/extreme_dem");
+                                districtPlan.setPlanType("MMD/extreme_dem");
                             }else if(name.contains("extreme_rep")){
-                                districtPlan.setPlanType("mmd/extreme_rep");
+                                districtPlan.setPlanType("MMD/extreme_rep");
                             }else if(name.contains("least_majority")){
-                                districtPlan.setPlanType("mmd/least_majority");
+                                districtPlan.setPlanType("MMD/least_majority");
                             }else if(name.contains("most_majority")){
-                                districtPlan.setPlanType("mmd/most_majority");
+                                districtPlan.setPlanType("MMD/most_majority");
                             }else{
-                                districtPlan.setPlanType("mmd/average");
+                                districtPlan.setPlanType("MMD/average");
                             }
                             districtPlan.setDistrictBoundaryPath(mmdPath+p+"/geoJson/"+name);
                             List<District> districts=new ArrayList<>();
@@ -526,6 +526,7 @@ public class StateController {
                             String drs="";
                             for(Object feature:features){
                                 District district=new District();
+                                List<Representative> representatives=new ArrayList<>();
                                 List<DistrictDemographic> demographics=new ArrayList<>();
                                 DistrictDemographic whiteDemo=new DistrictDemographic();
                                 DistrictDemographic asianDemo=new DistrictDemographic();
@@ -543,6 +544,18 @@ public class StateController {
                                 Double repVote=(Double)properties.get("RepVote");
                                 String totalDRSplit=(String)properties.get("TotalDRSplit");
                                 String districtDRSplit=(String)properties.get("DistrictDRSplit");
+                                String representativeString=(String)properties.get("Representatives");
+                                String[] reprs=representativeString.split(" ");
+                                for(int i=0;i<reprs.length;i++){
+                                    Representative representative=new Representative();
+                                    if(reprs[i].contains("Democratic")){
+                                        representative.setParty(InterestType.DEMOCRAT);
+                                    }else{
+                                        representative.setParty(InterestType.REPUBLICAN);
+                                    }
+                                    representative.setName(reprs[i]);
+                                    representatives.add(representative);
+                                }
                                 Double compactness=(Double)properties.get("Compactness");
                                 Double majorMin=(Double)properties.get("MajorMin");
 //                        Double minorRep=(Double)properties.get("MinorRep");
@@ -569,6 +582,8 @@ public class StateController {
                                 district.setNumber(Integer.parseInt(districtNum));
                                 district.setDemSafe(demSave.intValue());
                                 district.setRepSave(repSave.intValue());
+                                district.setSplit(districtDRSplit);
+                                district.setRepresentatives(representatives);
                                 districts.add(district);
                             }
                             districtPlan.setNumberOfDemocrat(demV);
