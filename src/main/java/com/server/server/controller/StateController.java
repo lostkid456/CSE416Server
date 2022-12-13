@@ -39,14 +39,51 @@ public class StateController {
         return stateService.getStateMap(state);
     }
 
-    @GetMapping("/smd/extremeRep/map/{state}")
+    @GetMapping("/smd/extremeDem/map/{state}")
     public Map<String,Object> getSMDExtremeDem(@PathVariable String state){
         return stateService.getSMDExtremeDem(state);
+    }
+
+    @GetMapping("/smd/extremeRep/map/{state}")
+    public Map<String,Object> getSMDExtremeRep(@PathVariable String state){
+        return stateService.getSMDExtremeRep(state);
+    }
+
+    @GetMapping("/smd/leastM/map/{state}")
+    public Map<String,Object> getSMDLeastMajority(@PathVariable String state){
+        return stateService.getSMDLeastMajority(state);
+    }
+
+    @GetMapping("/smd/mostM/map/{state}")
+    public Map<String,Object> getSMDMostMajority(@PathVariable String state){
+        return stateService.getSMDMostMajority(state);
+    }
+
+    @GetMapping("/smd/random/map/{state}/{value}")
+    public Map<String,Object> getSMDRandomPlan(@PathVariable String state,@PathVariable int planNum){
+        return stateService.getSMDRandomPlan(state,planNum);
     }
 
     @GetMapping("/mmd/average/map/{state}/{type}")
     public Map<String,Object> getMMDAverageMap(@PathVariable String state,@PathVariable String type){
         return stateService.getMMDAverageMap(state,type);
+    }
+
+    @GetMapping("/mmd/extremeRep/map/{state}/{type}")
+    public Map<String,Object> getMMDExtremeRepMap(@PathVariable String state,@PathVariable String type){
+        return stateService.getMMDExtremeRepMap(state,type);
+    }
+    @GetMapping("/mmd/extremeDem/map/{state}/{type}")
+    public Map<String,Object> getMMDExtremeDemMap(@PathVariable String state,@PathVariable String type){
+        return stateService.getMMDExtremeDemMap(state,type);
+    }
+    @GetMapping("/mmd/mostM/map/{state}/{type}")
+    public Map<String,Object> getMMDMostMajorityMap(@PathVariable String state,@PathVariable String type){
+        return stateService.getMMDMostMajorityMap(state,type);
+    }
+    @GetMapping("/mmd/leastM/map/{state}/{type}")
+    public Map<String,Object> getMMDLeastMajorityMap(@PathVariable String state,@PathVariable String type){
+        return stateService.getMMDLeastMajorityMap(state,type);
     }
 
     @GetMapping("/ensemble/{state}")

@@ -64,7 +64,7 @@ public class StateService {
             if(ensemble.getType().equals("SMD")){
                 List<DistrictPlan> districtPlans=ensemble.getDistrictPlans();
                 for(DistrictPlan districtPlan:districtPlans){
-                    if(districtPlan.getPlanType().contains("dem")){
+                    if(districtPlan.getPlanType().equals("SMD/extreme_dem")){
                         try{
                             ObjectMapper objectMapper=new ObjectMapper();
                             File averageMap=ResourceUtils.getFile("classpath:"+districtPlan.getDistrictBoundaryPath());
@@ -78,6 +78,100 @@ public class StateService {
         }
         return null;
     }
+
+    public Map<String,Object> getSMDExtremeRep(String state){
+        State currState=stateRepository.findByState(state);
+        List<Ensemble> ensembleList=currState.getEnsembles();
+        for(Ensemble ensemble:ensembleList){
+            if(ensemble.getType().equals("SMD")){
+                List<DistrictPlan> districtPlans=ensemble.getDistrictPlans();
+                for(DistrictPlan districtPlan:districtPlans){
+                    if(districtPlan.getPlanType().equals("SMD/extreme_rep")){
+                        try{
+                            ObjectMapper objectMapper=new ObjectMapper();
+                            File averageMap=ResourceUtils.getFile("classpath:"+districtPlan.getDistrictBoundaryPath());
+                            return objectMapper.readValue(averageMap,new TypeReference<>(){});
+                        }catch (IOException e){
+                            System.out.println(e.getMessage());
+                        }
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    public Map<String,Object> getSMDLeastMajority(String state){
+        State currState=stateRepository.findByState(state);
+        List<Ensemble> ensembleList=currState.getEnsembles();
+        for(Ensemble ensemble:ensembleList){
+            if(ensemble.getType().equals("SMD")){
+                List<DistrictPlan> districtPlans=ensemble.getDistrictPlans();
+                for(DistrictPlan districtPlan:districtPlans){
+                    if(districtPlan.getPlanType().equals("SMD/least_majority")){
+                        try{
+                            ObjectMapper objectMapper=new ObjectMapper();
+                            File averageMap=ResourceUtils.getFile("classpath:"+districtPlan.getDistrictBoundaryPath());
+                            return objectMapper.readValue(averageMap,new TypeReference<>(){});
+                        }catch (IOException e){
+                            System.out.println(e.getMessage());
+                        }
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    public Map<String,Object> getSMDMostMajority(String state){
+        State currState=stateRepository.findByState(state);
+        List<Ensemble> ensembleList=currState.getEnsembles();
+        for(Ensemble ensemble:ensembleList){
+            if(ensemble.getType().equals("SMD")){
+                List<DistrictPlan> districtPlans=ensemble.getDistrictPlans();
+                for(DistrictPlan districtPlan:districtPlans){
+                    if(districtPlan.getPlanType().equals("SMD/most_majority")){
+                        try{
+                            ObjectMapper objectMapper=new ObjectMapper();
+                            File averageMap=ResourceUtils.getFile("classpath:"+districtPlan.getDistrictBoundaryPath());
+                            return objectMapper.readValue(averageMap,new TypeReference<>(){});
+                        }catch (IOException e){
+                            System.out.println(e.getMessage());
+                        }
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    public Map<String,Object> getSMDRandomPlan(String state,int planNum){
+        State currState=stateRepository.findByState(state);
+        List<Ensemble> ensembleList=currState.getEnsembles();
+        int counter=1;
+        for(Ensemble ensemble:ensembleList){
+            if(ensemble.getType().equals("SMD")){
+                List<DistrictPlan> districtPlans=ensemble.getDistrictPlans();
+                for(DistrictPlan districtPlan:districtPlans){
+                    if(districtPlan.getPlanType().equals("SMD/random")){
+                        if(counter==planNum){
+                            try{
+                                ObjectMapper objectMapper=new ObjectMapper();
+                                File averageMap=ResourceUtils.getFile("classpath:"+districtPlan.getDistrictBoundaryPath());
+                                return objectMapper.readValue(averageMap,new TypeReference<>(){});
+                            }catch (IOException e){
+                                System.out.println(e.getMessage());
+                            }
+                        }else{
+                            counter+=1;
+                        }
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
     public Map<String,Object> getMMDAverageMap(String state,String type){
         State currenState=stateRepository.findByState(state);
         List<Ensemble> ensembleList=currenState.getEnsembles();
@@ -86,6 +180,94 @@ public class StateService {
                 List<DistrictPlan> districtPlans=ensemble.getDistrictPlans();
                 for(DistrictPlan districtPlan:districtPlans){
                     if(districtPlan.getPlanType().equals("MMD/average")){
+                        try{
+                            ObjectMapper objectMapper=new ObjectMapper();
+                            File averageMap=ResourceUtils.getFile("classpath:"+districtPlan.getDistrictBoundaryPath());
+                            return objectMapper.readValue(averageMap,new TypeReference<>(){});
+                        }catch (IOException e){
+                            System.out.println(e.getMessage());
+                        }
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    public Map<String,Object> getMMDExtremeRepMap(String state,String type){
+        State currenState=stateRepository.findByState(state);
+        List<Ensemble> ensembleList=currenState.getEnsembles();
+        for(Ensemble ensemble:ensembleList){
+            if(ensemble.getType().equals(type)){
+                List<DistrictPlan> districtPlans=ensemble.getDistrictPlans();
+                for(DistrictPlan districtPlan:districtPlans){
+                    if(districtPlan.getPlanType().equals("MMD/extreme_rep")){
+                        try{
+                            ObjectMapper objectMapper=new ObjectMapper();
+                            File averageMap=ResourceUtils.getFile("classpath:"+districtPlan.getDistrictBoundaryPath());
+                            return objectMapper.readValue(averageMap,new TypeReference<>(){});
+                        }catch (IOException e){
+                            System.out.println(e.getMessage());
+                        }
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    public Map<String,Object> getMMDExtremeDemMap(String state,String type){
+        State currenState=stateRepository.findByState(state);
+        List<Ensemble> ensembleList=currenState.getEnsembles();
+        for(Ensemble ensemble:ensembleList){
+            if(ensemble.getType().equals(type)){
+                List<DistrictPlan> districtPlans=ensemble.getDistrictPlans();
+                for(DistrictPlan districtPlan:districtPlans){
+                    if(districtPlan.getPlanType().equals("MMD/extreme_dem")){
+                        try{
+                            ObjectMapper objectMapper=new ObjectMapper();
+                            File averageMap=ResourceUtils.getFile("classpath:"+districtPlan.getDistrictBoundaryPath());
+                            return objectMapper.readValue(averageMap,new TypeReference<>(){});
+                        }catch (IOException e){
+                            System.out.println(e.getMessage());
+                        }
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    public Map<String,Object> getMMDLeastMajorityMap(String state,String type){
+        State currenState=stateRepository.findByState(state);
+        List<Ensemble> ensembleList=currenState.getEnsembles();
+        for(Ensemble ensemble:ensembleList){
+            if(ensemble.getType().equals(type)){
+                List<DistrictPlan> districtPlans=ensemble.getDistrictPlans();
+                for(DistrictPlan districtPlan:districtPlans){
+                    if(districtPlan.getPlanType().equals("MMD/least_majority")){
+                        try{
+                            ObjectMapper objectMapper=new ObjectMapper();
+                            File averageMap=ResourceUtils.getFile("classpath:"+districtPlan.getDistrictBoundaryPath());
+                            return objectMapper.readValue(averageMap,new TypeReference<>(){});
+                        }catch (IOException e){
+                            System.out.println(e.getMessage());
+                        }
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    public Map<String,Object> getMMDMostMajorityMap(String state,String type){
+        State currenState=stateRepository.findByState(state);
+        List<Ensemble> ensembleList=currenState.getEnsembles();
+        for(Ensemble ensemble:ensembleList){
+            if(ensemble.getType().equals(type)){
+                List<DistrictPlan> districtPlans=ensemble.getDistrictPlans();
+                for(DistrictPlan districtPlan:districtPlans){
+                    if(districtPlan.getPlanType().equals("MMD/most_majority")){
                         try{
                             ObjectMapper objectMapper=new ObjectMapper();
                             File averageMap=ResourceUtils.getFile("classpath:"+districtPlan.getDistrictBoundaryPath());
