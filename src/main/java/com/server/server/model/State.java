@@ -1,8 +1,10 @@
 package com.server.server.model;
 
+import com.server.server.model.enums.InterestType;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 @Getter
@@ -22,6 +24,9 @@ public class State {
 
     private int totalPopulation;
 
+    @Transient
+    private int totalDemographicPopulation;
+
     @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     @JoinColumn(name="state_id")
     private List<Ensemble> ensembles;
@@ -30,4 +35,25 @@ public class State {
     @JoinColumn(name="state_id")
     private List<StateDemographic> stateDemographics;
 
+    public LinkedHashMap<InterestType,Double> getStateDemographics(){
+        int total=0;
+        for(StateDemographic stateDemographic:stateDemographics){
+            total+=stateDemographic.getPopulation();
+        }
+        setTotalDemographicPopulation(total);
+        double percentage=0;
+        LinkedHashMap<InterestType,Double> percentages=new LinkedHashMap<>();
+        int stateTotal=totalPopulation;
+        for(StateDemographic stateDemographic:stateDemographics){
+            Double population= (double) stateDemographic.getPopulation();
+            percentage+=population/stateTotal;
+            percentages.put(stateDemographic.getType(), (population/stateTotal));
+        }
+        if(1-percentage<0){
+            percentages.put(InterestType.OTHER,0.0);
+        }else{
+            percentages.put(InterestType.OTHER,1-percentage);
+        }
+        return percentages;
+    }
 }

@@ -6,6 +6,7 @@ import com.server.server.model.District;
 import com.server.server.model.DistrictPlan;
 import com.server.server.model.Ensemble;
 import com.server.server.model.State;
+import com.server.server.model.enums.InterestType;
 import com.server.server.repository.DistrictPlanRepository;
 import com.server.server.repository.EnsembleRepository;
 import com.server.server.repository.StateRepository;
@@ -15,6 +16,8 @@ import org.springframework.util.ResourceUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -37,8 +40,22 @@ public class StateService {
     }
 
     public State getState(String state){
+        return stateRepository.findByState(state);
+    }
+
+    public List<Object> getStateDemographics(String state){
         State currState=stateRepository.findByState(state);
-        return currState;
+        LinkedHashMap<InterestType,Double> percentages=currState.getStateDemographics();
+//        for(InterestType type:percentages.keySet()){
+//            System.out.println(percentages.get(type));
+//        }
+        List<Object> objects=new ArrayList<>();
+        LinkedHashMap<String,Integer> populations=new LinkedHashMap<>();
+        populations.put("DemographicTotal",currState.getTotalDemographicPopulation());
+        populations.put("TotalPopulation",currState.getTotalPopulation());
+        objects.add(populations);
+        objects.add(percentages);
+        return objects;
     }
 
     public Map<String,Object> getStateMap(String state){

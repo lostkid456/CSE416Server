@@ -34,6 +34,11 @@ public class StateController {
         return stateService.getState(state);
     }
 
+    @GetMapping("/home/demographics/{state}")
+    public List<Object> getStateDemographics(@PathVariable String state){
+       return stateService.getStateDemographics(state);
+    }
+
     @GetMapping("/map/{state}")
     public Map<String,Object> getStateMap(@PathVariable String state){
         return stateService.getStateMap(state);
