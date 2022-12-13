@@ -106,6 +106,21 @@ public class StateController {
         return smd;
     }
 
+    @GetMapping("/mmd/summary/{state}")
+    public List<Ensemble> getMMDSummary(@PathVariable String state){
+        State currState=stateService.getState(state);
+        Ensemble mmd1=currState.getEnsembles().get(0);
+        Ensemble mmd2=currState.getEnsembles().get(1);
+        mmd1.setDistrictPlans(null);
+        mmd2.setDistrictPlans(null);
+        mmd1.setBoxAndWhiskers(null);
+        mmd2.setBoxAndWhiskers(null);
+        List<Ensemble> mmdEnsembleSummaryArray = new ArrayList<Ensemble>();
+        mmdEnsembleSummaryArray.add(mmd1);
+        mmdEnsembleSummaryArray.add(mmd2);
+        return mmdEnsembleSummaryArray;
+    }
+
     @GetMapping("/smd/districtPlans/{state}")
     public List<DistrictPlan> getCurrentDemographic(@PathVariable String state){
         State currState=stateService.getState(state);
