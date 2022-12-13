@@ -45,15 +45,13 @@ public class StateService {
 
     public List<Object> getStateDemographics(String state){
         State currState=stateRepository.findByState(state);
-        LinkedHashMap<InterestType,Double> percentages=currState.getStateDemographics();
+        List<Object> objects=currState.getStateDemographics();
 //        for(InterestType type:percentages.keySet()){
 //            System.out.println(percentages.get(type));
 //        }
-        List<Object> objects=new ArrayList<>();
         LinkedHashMap<String,Integer> populations=new LinkedHashMap<>();
         populations.put("TotalPopulation",currState.getTotalPopulation());
         objects.add(populations);
-        objects.add(percentages);
         return objects;
     }
 

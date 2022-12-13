@@ -4,6 +4,7 @@ import com.server.server.model.enums.InterestType;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -32,20 +33,25 @@ public class State {
     @JoinColumn(name="state_id")
     private List<StateDemographic> stateDemographics;
 
-    public LinkedHashMap<InterestType,Double> getStateDemographics(){
+    public List<Object> getStateDemographics(){
+        List<Object> objects=new ArrayList<>();
         double percentage=0;
         LinkedHashMap<InterestType,Double> percentages=new LinkedHashMap<>();
+        LinkedHashMap<InterestType,Double> populations=new LinkedHashMap<>();
         int stateTotal=totalPopulation;
         for(StateDemographic stateDemographic:stateDemographics){
             Double population= (double) stateDemographic.getPopulation();
             percentage+=population/stateTotal;
-            percentages.put(stateDemographic.getType(), (population/stateTotal));
+            populations.put(stateDemographic.getType(),population);
+            percentages.put(stateDemographic.getType(), 100*(population/stateTotal));
         }
         if(1-percentage<0){
             percentages.put(InterestType.OTHER,0.0);
         }else{
-            percentages.put(InterestType.OTHER,1-percentage);
+            percentages.put(InterestType.OTHER,100*(1-percentage));
         }
-        return percentages;
+        objects.add(percentages);
+        objects.add(populations);
+        return objects;
     }
 }
