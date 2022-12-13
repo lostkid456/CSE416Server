@@ -24,9 +24,6 @@ public class State {
 
     private int totalPopulation;
 
-    @Transient
-    private int totalDemographicPopulation;
-
     @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     @JoinColumn(name="state_id")
     private List<Ensemble> ensembles;
@@ -36,11 +33,6 @@ public class State {
     private List<StateDemographic> stateDemographics;
 
     public LinkedHashMap<InterestType,Double> getStateDemographics(){
-        int total=0;
-        for(StateDemographic stateDemographic:stateDemographics){
-            total+=stateDemographic.getPopulation();
-        }
-        setTotalDemographicPopulation(total);
         double percentage=0;
         LinkedHashMap<InterestType,Double> percentages=new LinkedHashMap<>();
         int stateTotal=totalPopulation;

@@ -51,7 +51,6 @@ public class StateService {
 //        }
         List<Object> objects=new ArrayList<>();
         LinkedHashMap<String,Integer> populations=new LinkedHashMap<>();
-        populations.put("DemographicTotal",currState.getTotalDemographicPopulation());
         populations.put("TotalPopulation",currState.getTotalPopulation());
         objects.add(populations);
         objects.add(percentages);
