@@ -64,7 +64,7 @@ public class StateController {
         return stateService.getSMDMostMajority(state);
     }
 
-    @GetMapping("/smd/random/map/{state}/{value}")
+    @GetMapping("/smd/random/map/{state}/{planNum}")
     public Map<String,Object> getSMDRandomPlan(@PathVariable String state,@PathVariable int planNum){
         return stateService.getSMDRandomPlan(state,planNum);
     }
