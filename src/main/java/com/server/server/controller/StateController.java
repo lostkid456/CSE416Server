@@ -484,7 +484,6 @@ public class StateController {
                         }
                         counter=1;
                     }else{
-                        System.out.println("BB :"+Arrays.toString(line));
                         switch (line[0]) {
                             case "25%":
                                 for (int i = 1; i < line.length; i++) {
@@ -565,10 +564,11 @@ public class StateController {
                 for(File info:patternDir){
                     if(info.getName().contains("boxandwhisker")){
                         File[] bwDir=info.listFiles();
-                        int counter=0;
                         for(File bw:bwDir){
+                            int counter=0;
                             mmdBoxAndWhiskerCsvReader=new CSVReader(new FileReader(bw.getAbsolutePath()));
                             mmdBoxAndWhiskerCsvReader.skip(1);
+                            List<BoxAndWhisker> boxAndWhiskers=new ArrayList<>();
                             while((line=mmdBoxAndWhiskerCsvReader.readNext())!=null){
                                 if(counter==0){
                                     for(int i=1;i<line.length;i++){
@@ -581,7 +581,7 @@ public class StateController {
                                         }else if(bw.getName().contains("hispanic")){
                                             boxAndWhisker.setType(InterestType.LATINO);
                                         }
-                                        mmdBoxAndWhiskers.add(boxAndWhisker);
+                                        boxAndWhiskers.add(boxAndWhisker);
                                     }
                                     counter=1;
                                 }else{
@@ -589,27 +589,27 @@ public class StateController {
                                     switch (line[0]) {
                                         case "25%":
                                             for (int i = 1; i < line.length; i++) {
-                                                mmdBoxAndWhiskers.get(i - 1).setFirstQ(Double.parseDouble(line[i]));
+                                                boxAndWhiskers.get(i - 1).setFirstQ(Double.parseDouble(line[i]));
                                             }
                                             break;
                                         case "min":
                                             for (int i = 1; i < line.length; i++) {
-                                                mmdBoxAndWhiskers.get(i - 1).setMin(Double.parseDouble(line[i]));
+                                                boxAndWhiskers.get(i - 1).setMin(Double.parseDouble(line[i]));
                                             }
                                             break;
                                         case "50%":
                                             for (int i = 1; i < line.length; i++) {
-                                                mmdBoxAndWhiskers.get(i - 1).setMedian(Double.parseDouble(line[i]));
+                                                boxAndWhiskers.get(i - 1).setMedian(Double.parseDouble(line[i]));
                                             }
                                             break;
                                         case "75%":
                                             for (int i = 1; i < line.length; i++) {
-                                                mmdBoxAndWhiskers.get(i - 1).setThirdQ(Double.parseDouble(line[i]));
+                                                boxAndWhiskers.get(i - 1).setThirdQ(Double.parseDouble(line[i]));
                                             }
                                             break;
                                         case "max":
                                             for (int i = 1; i < line.length; i++) {
-                                                mmdBoxAndWhiskers.get(i - 1).setMax(Double.parseDouble(line[i]));
+                                                boxAndWhiskers.get(i - 1).setMax(Double.parseDouble(line[i]));
                                             }
                                             break;
                                         default:
@@ -617,6 +617,7 @@ public class StateController {
                                     }
                                 }
                             }
+                            mmdBoxAndWhiskers.addAll(boxAndWhiskers);
                         }
                     }else if(info.getName().contains("geoJson")){
                         File[] gJsonDir=info.listFiles();
