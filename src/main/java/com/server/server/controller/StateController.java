@@ -262,7 +262,7 @@ public class StateController {
             }else if(state.equals("VA")){
                 enactedCsvReader=new CSVReader(new FileReader(ResourceUtils.getFile("classpath:smd/enacted" +
                                                                                             "/Virginia" +
-                                                                                            "/Virginia_Enacted_Demographic.csv")));
+                                                                                            "/Virginia_Enacted_Demographics.csv")));
                 geoJsonDir=new File(ResourceUtils.getFile("classpath:smd/geoJson/Virginia").getAbsolutePath());
                 geoJsonPath="smd/geoJson/Virginia/";
                 boxAndWhiskerDir=
@@ -301,6 +301,8 @@ public class StateController {
                 newState.setState("NC");
             }
             enactedCsvReader.skip(1);
+            int demos=0;
+            int reps=0;
             while((line=enactedCsvReader.readNext())!=null){
                 District district=new District();
                 district.setNumber(Integer.parseInt(line[0]));
@@ -328,6 +330,21 @@ public class StateController {
                 democrat+=Integer.parseInt(line[8]);
                 republican+=Integer.parseInt(line[9]);
                 majorityMinority=Integer.parseInt(line[10]);
+                Double repPercent=Double.parseDouble(line[7]);
+                Double demPercent=Double.parseDouble(line[6]);
+                String representativeName=line[11];
+                Representative representative=new Representative();
+                if(repPercent>demPercent){
+                    representative.setParty(InterestType.REPUBLICAN);
+                    reps+=1;
+                }else{
+                    representative.setParty(InterestType.DEMOCRAT);
+                    demos+=1;
+                }
+                representative.setName(representativeName);
+                List<Representative> representatives=new ArrayList<>();
+                representatives.add(representative);
+                district.setRepresentatives(representatives);
                 enactedDistricts.add(district);
             }
             StateDemographic whiteD=new StateDemographic();
@@ -351,6 +368,7 @@ public class StateController {
             enactedPlan.setNumberOfRepublican(republican);
             enactedPlan.setNumberOfDemocrat(democrat);
             enactedPlan.setNumberOfMajorityMinority(majorityMinority);
+            enactedPlan.setSplit(demos+"|"+reps);
             smdDistrictPlans.add(enactedPlan);
             enactedPlan.setDistrictBoundaryPath(enactedPlanPath);
             File[] directoryListing=geoJsonDir.listFiles();
@@ -634,7 +652,7 @@ public class StateController {
                                 DistrictDemographic latinoDemo=new DistrictDemographic();
                                 LinkedHashMap<String,Object> feat=(LinkedHashMap<String, Object>) feature;
                                 LinkedHashMap<String,Object> properties=(LinkedHashMap<String, Object>) feat.get("properties");
-                                String districtNum=(String)properties.get("District");
+                                Integer districtNum=(Integer) properties.get("District");
                                 Double totalPop=(Double)properties.get("TotalPop");
                                 Double whitePop=(Double) properties.get("WhitePop");
                                 Double asianPop=(Double)properties.get("AsianPop");
@@ -679,7 +697,7 @@ public class StateController {
                                 district.setDistrictDemographics(demographics);
                                 district.setCompactness(compactness);
                                 district.setTotal(totalPop.intValue());
-                                district.setNumber(Integer.parseInt(districtNum));
+                                district.setNumber(districtNum);
                                 district.setDemSafe(demSave.intValue());
                                 district.setRepSave(repSave.intValue());
                                 district.setSplit(districtDRSplit);
