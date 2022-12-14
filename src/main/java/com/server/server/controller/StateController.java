@@ -146,6 +146,11 @@ public class StateController {
         return districtPlans;
     }
 
+    @GetMapping("/smd/enactedPlan/{state}")
+    public DistrictPlan getEnactedPlan(@PathVariable String state){
+        return stateService.getCurrentEnactedPlan(state);
+    }
+
     @GetMapping("/smd/barGraph/{state}")
     public List<RepDemSplit> getSMDGraphs(@PathVariable String state){
         State currState=stateService.getState(state);

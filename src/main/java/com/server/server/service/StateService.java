@@ -71,6 +71,22 @@ public class StateService {
         return null;
     }
 
+    public DistrictPlan getCurrentEnactedPlan(String state){
+        State currState=stateRepository.findByState(state);
+        List<Ensemble> ensembles=currState.getEnsembles();
+        for(Ensemble ensemble:ensembles){
+            if(ensemble.getType().equals("SMD")){
+                List<DistrictPlan> districtPlans=ensemble.getDistrictPlans();
+                for(DistrictPlan districtPlan:districtPlans){
+                    if(districtPlan.getPlanType().equals("smd/enacted")){
+                        return districtPlan;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
     public Map<String,Object> getSMDExtremeDem(String state){
         State currState=stateRepository.findByState(state);
         List<Ensemble> ensembleList=currState.getEnsembles();
