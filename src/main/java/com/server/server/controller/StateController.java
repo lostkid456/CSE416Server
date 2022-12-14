@@ -73,6 +73,23 @@ public class StateController {
     public Map<String,Object> getMMDAverageMap(@PathVariable String state,@PathVariable String type){
         return stateService.getMMDAverageMap(state,type);
     }
+    
+    @GetMapping("/mmd/average/{state}/{type}")
+    public List<DistrictPlan> getMMDAverageData(@PathVariable String state,@PathVariable String type){
+        List<DistrictPlan> averageDistrictPlans = new ArrayList<DistrictPlan>();
+        State currState=stateService.getState(state);
+        List<Ensemble> ensembleList=currState.getEnsembles();
+        for(Ensemble ensemble:ensembleList){
+            List<DistrictPlan> districtPlans=ensemble.getDistrictPlans();
+            for(DistrictPlan districtPlan:districtPlans){
+                if(districtPlan.getPlanType().equals("MMD/average")){
+                    averageDistrictPlans.add(districtPlan);
+                }
+            }
+            
+        }
+        return averageDistrictPlans;
+    }
 
     @GetMapping("/mmd/extremeRep/map/{state}/{type}")
     public Map<String,Object> getMMDExtremeRepMap(@PathVariable String state,@PathVariable String type){
